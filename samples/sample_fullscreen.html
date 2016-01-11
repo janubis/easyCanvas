@@ -1,0 +1,154 @@
+<!DOCTYPE HTML>
+<html><!-- InstanceBegin template="/Templates/template_demo.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!-- InstanceBeginEditable name="doctitle" -->
+	<title>easyCanvas for Javascript - demo and sample code</title>
+	<!-- InstanceEndEditable -->
+	<link rel="stylesheet" type="text/css" href="../css/demos.css">
+	<script type="text/javascript" src="../easyCanvas.1.3.js"></script>
+	<script type="text/javascript" src="../js/code.js"></script>
+	<!-- InstanceBeginEditable name="head" -->
+	<!-- InstanceEndEditable -->
+</head>
+
+<body>
+
+	<header>
+		<a href="http://easycanvasjs.com/"><img src="../gfx/logo1.png" width="100" height="45" alt="easyCanvasJS"></a>
+		<div class="moreSamples">For more demos and samples visit <a href="http://easycanvasjs.com/samples.html">easyCanvasJS / samples</a></div>
+	</header>
+	
+	<div id="content">
+		<section id="main"><!-- InstanceBeginEditable name="Main" -->
+		<h1>Demonstrates full-screen mode</h1>
+		
+		<div class="instr">Full-screen mode allows you to toggle canvas (click on it now to see) between normal size and full-screen size
+		with browsers which support the Fullscreen API. You can choose two modes: resized (canvas changes size to fill
+		screen) or zoomed (canvas keeps same size but is scaled to fit screen).</div>
+		
+		<canvas id="demo" class="canvasFull" width="800" height="400" style="background:#007">Sorry, your browser does not support the canvas element.
+			Please consider upgrading to a modern HTML5 compliant browser such as Chrome or Firefox.</canvas>
+		<!-- InstanceEndEditable -->
+			<div id="info">-</div>
+			
+			<h2>The code in essence:</h2>
+			
+<!-- InstanceBeginEditable name="CodeEssence" --><pre data-code="js">
+ez.fullScreenMode = 0; // default 0 = cover, 1 = zoom
+ez.fullScreen(boolean);
+</pre><!-- InstanceEndEditable -->
+
+			<h2>Full code:</h2>
+			
+			<pre data-code="js" id="codePre">Automatically inserted</pre>
+			
+		</section>
+		
+		<section id="rightside">
+		
+			<h2>Parameters</h2>
+			<!-- InstanceBeginEditable name="Parameters" -->
+			<div class="para">
+				<div>Full-screen mode:</div>
+				<select id="fullscreenMode">
+					<option value="0">Cover</option>
+					<option value="1">Scaled</option>
+				</select>
+			</div>
+			<!-- InstanceEndEditable --></section>
+	</div>		
+	<footer>
+		All examples are provided under the same license as easyCanvas, GPL-3.0.
+		<div id="abdias"></div>
+	</footer>
+<!-- InstanceBeginEditable name="Code" --><script id="codeJS" type="text/javascript">
+var ez = new easyCanvas('demo'),
+	ctx = ez.ctx,
+
+	/// settings for demo and ball movements
+	ea = 2 * Math.PI,
+	balls, dltX, dltY, sz, cnt = 25;
+
+ez.onmouseup = function() {
+
+	/// set full-screen type
+	ez.fullScreenMode = parseInt(fullscreenMode.value, 10); /// default 0 = cover, 1 = zoom
+
+	/// toggle full-screen mode
+	ez.fullScreen(!ez.fullScreen());
+}
+
+/// init balls and start animation
+init();
+loop();
+
+/// when size of canvas change init balls again
+ez.onredraw = function() {
+	init();
+}
+
+function init() {
+	ctx.fillStyle = '#f00';
+	initBalls();
+}
+
+/// init, render and move the balls
+
+function loop() {
+	
+	var i = 0, x, y, dx, dy, z, w = ez.width, h = ez.height;
+	
+	ez.clear();
+
+	for(; i < cnt; i++) {
+
+		x = balls[i * 2];
+		y = balls[i * 2 + 1];
+		z = sz[i];
+		dx = dltX[i];
+		dy = dltY[i];
+
+		if (x < 0 || x > w) dx = -dx;
+		if (y < 0 || y > h) dy = -dy;
+
+		x += dx;
+		y += dy;
+		
+		balls[i * 2] = x;
+		balls[i * 2 + 1] = y;
+		dltX[i] = dx;
+		dltY[i] = dy;
+		
+		ctx.beginPath();
+		ctx.arc(x, y, z, 0, ea);
+		ctx.closePath();
+		ctx.fill();
+	}	
+	
+	requestAnimationFrame(loop);
+}
+
+function initBalls() {
+	
+	var i = 0, w = ez.width, h = ez.height;
+
+	balls = [];
+	dltX = [];
+	dltY = [];
+	sz = [];
+	
+	for(; i < cnt; i++) {
+		balls.push(w * Math.random());
+		balls.push(h * Math.random());
+		dltX.push(((7 * Math.random() + 1) * ((Math.random() < 0.5) ? 1 : -1))|0);
+		dltY.push(((7 * Math.random() + 1) * ((Math.random() < 0.5) ? 1 : -1))|0);
+		sz.push(20 * Math.random() + 10);
+	}
+}
+
+</script>
+<!-- InstanceEndEditable -->
+<script type="text/javascript">codeFormatter()</script>
+</body>
+<!-- InstanceEnd --></html>

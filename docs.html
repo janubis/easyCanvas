@@ -1,0 +1,1086 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>easyCanvas for HTML5 and JavaScript - Documentation</title>
+<link rel="stylesheet" type="text/css" href="css/main.css"/>
+</head>
+
+<body>
+<div id="bg">
+	<div id="version">
+		<div class="versionTop">CURRENT VERSION</div>
+		<div class="versionBtm">1.3</div>
+	</div>
+	<div id="bgmenu"></div>
+</div>
+<div id="content">
+	<div id="header"> <img src="gfx/logo1.png" width="345" height="150" alt="uniStoreJS" /> </div>
+	<div id="menu">
+		<ul>
+			<li><a href="index.html">About</a></li>
+			<li><a href="samples.html">Samples and demos</a></li>
+			<li><a href="changelog.html">News</a></li>
+			<li><a href="download.html">Download</a></li>
+			<li><a href="docs.html" class="selectedMenu">Documentation</a></li>
+		</ul>
+	</div>
+	<div id="main">
+		<div id="leftside" style="width:100%;padding-right:0;">
+
+<a id="top"></a>
+
+<h1>Reference for easyCanvas</h1>
+
+<p>To start simply include the file <code>easyCanvas.x.y.js</code> (development) or <code>easyCanvas.min.x.y.js</code> (production) file in your HTML page where x.y is current version.</p>
+
+<p><span>easyCanvas</span> can be run in strict mode.</p>
+
+<a href="#parameters">Parameters</a><br />
+<a href="#properties">Properties</a><br />
+<a href="#methods">Methods</a><br />
+<a href="#events">Events</a><br />
+<a href="#extevents">Extended event</a><br />
+<br />
+<a href="#offscreenobject">The off-screen object</a>
+<a href="#hotkeyobject">The hotkey object</a>
+<a href="#regionobject">The region object</a>
+
+<h2>USAGE:</h2>
+
+<pre>
+var ez = new easyCanvas()
+var ez = new easyCanvas(canvasElement)
+var ez = new easyCanvas(parentElement)
+var ez = new easyCanvas(width, height, canvasElement)
+var ez = new easyCanvas(width, height, parentElement)</pre>
+<p>If no parameters are given  the canvas will be opened with the size of the window and <code>autoResize</code> set to <code>true</code>.</p>
+
+<p>Properties, methods, events that are available in both full and light version are marked with <img src="gfx/LT.png" width="20" height="18" alt="Light" align="absmiddle" /> in the upper right corner of the fist column.
+If no mark is shown then it is only available in the full version.</p>
+
+<p>Note: as of version 1.1 debug mode is no longer available.</p>
+<a id="parameters"></a>
+<h2>Parameters</h2>
+<p>NOTE: The parameters can come in any order, but <code>width</code> and <code>height</code> must always be coupled in that order.</p>
+<table class="docTbl" width="100%" border="0" cellspacing="0" cellpadding="7">
+	<caption>
+	Parameters
+	</caption>
+	<tr>
+		<td width="27%" class="lt">canvasElement</td>
+		<td width="73%"><strong>CanvasElement (optional)</strong><br />
+			An already existing canvas element. You can not define both a canvas element and a parent element at the same time.</td>
+	</tr>
+	<tr>
+		<td class="lt">height</td>
+		<td><strong>Integer (optional)</strong><br />
+			Height of the canvas. If no width and height is specified the canvas will use the window's width and height and set autoResize to true. Height must always be coupled with width  where width is specified first..</td>
+	</tr>
+	<tr>
+		<td class="lt">parentElement</td>
+		<td><strong>HTMLElement (optional).</strong><br />
+			A HTML element to use as a parent object. You can not define both a canvas element and a parent element at the same time.</td>
+	</tr>
+	<tr>
+		<td class="lt">width</td>
+		<td><strong>Integer (optional)</strong><br />
+			Width of the canvas. If no width and height is specified the canvas will use the window's width and height and set autoResize to true. Width must always be coupled with height where width is specified first.</td>
+	</tr>
+</table>
+<a id="properties"></a>
+<h2>Properties</h2>
+<table width="100%" border="0" cellspacing="0" cellpadding="7" class="docTbl">
+	<caption>
+	Properties
+	</caption>
+	<tr>
+		<td>autoClear<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Boolean. Default: false</strong><br />
+			Enables easyCanvas to handle background of new shapes drawn on top of the canvas during mouse moves. Auto-Clear is automatically handled when using <code>onmouseup</code>, <code>onmousedown</code> and <code>onmousemove</code> callbacks. To manually handle these see the <code>startAutoClear</code>, <code>updateAutoClear</code>, <code>clearBackground</code> and <code>endAutoClear</code> methods.</td>
+	</tr>
+	<tr>
+		<td class="lt">autoResize</td>
+		<td><strong>Boolean. Default: false (depends on if parameters)</strong><br />
+			Tells canvas to resize to fit window size. If parameters for size are given this defaults to <code>false</code>. If no parameters are given or size is not specified it defaults to <code>true</code>. This can of course be overrided manually..</td>
+	</tr>
+	<tr>
+		<td>calcAngle</td>
+		<td><strong>Boolean. Default: false</strong><br />
+			Calculates the angle between current and previous point in degrees as well as relative angle between this angle and previous angle when mouse button is held down. The angle is extended to the <code>mousemove</code> <em>event</em> as properties <code>angle</code> and <code>relativeAngle</code>..</td>
+	</tr>
+	<tr>
+		<td>calcDistance</td>
+		<td><strong>Boolean. Default: false</strong><br />
+			Calculates the distance in pixels (float) between current and previous point. It also keep track of total distance which both are extended to the <code>mousemove</code> <em>event</em> when mouse button is held down as <code>distance</code> and <code>totalDistance</code>. <code>totalDistance</code> is also available on the <code>mouseup</code> <em>event</em>.</td>
+	</tr>
+	<tr>
+		<td>calcVelocity</td>
+		<td><strong>Boolean. Default: false</strong><br />
+			Calculates the velocity (float) between the current and previous point based on time and distance when mouse button is held down. It also keep track of max velocity and extends the <code>mousemove</code> <em>event</em> with velocity and <code>maxVelocity</code>. <code>maxVelocity</code> is also available on the <code>mouseup</code> <em>event</em>.</td>
+	</tr>
+	<tr>
+		<td width="27%" class="lt">canvas</td>
+		<td width="73%"><strong>Canvas element (read only)</strong><br />
+			The actual canvas element being used for this instance.</td>
+	</tr>
+	<tr>
+		<td class="lt">clearBeforeDraw<br /></td>
+		<td><strong>Boolean. Default: true</strong><br />
+			Indicates if the easyCanvas instance should clear the canvas before calling <code>onredraw</code>. Defaults to <code>true</code> which means you don't need to clear the canvas with the code called for <code>onredraw</code>. If you for various reasons want to do this yourself set this flag to <code>false</code>.</td>
+	</tr>
+	<tr>
+		<td class="lt">clearColor</td>
+		<td><strong>String. Default: null</strong><br />
+			Specify a color to use with the <code>clear</code> method. Default is <code>null</code> which means the <code>clearRect</code> will be used. When a color is specified the <code>fillRect</code> of the context will be used instead. If this property is set before initializing the <code>onredraw</code> callback vector and <code>clearBeforeDraw = true</code> the canvas will be initialized with this color.			Any CSS and canvas compatible color can be specified.</td>
+	</tr>
+	<tr>
+		<td class="lt">count</td>
+		<td><strong>Integer (read only)</strong><br />
+			Contains number of points reported since mouse button was held down. The count included the first point recorded at the <code>mousedown</code> <em>event</em>. This property can be read during mouse moves which then reports current count. Reading it on the <code>mouseup</code> <em>event</em> reports total count. The count is reset for each <code>mousedown</code> <em>event</em>.</td>
+	</tr>
+	<tr>
+		<td>crossOrigin<br />
+			<em>Ver 1.3</em></td>
+		<td><strong>Boolean</strong><br />
+			Set this property to <code>true</code> to enable <em>cross-origin request</em> using <code>loadImage</code> and <code>loadImages</code>. The cross-origin type defaults to <code>anonymous</code> but can be changed using <code>crossOriginMode</code>.</td>
+	</tr>
+	<tr>
+		<td class="lt">crossOriginMode<br />
+			<em>Ver. 1.3</em></td>
+		<td><strong>String</strong><br />
+			When <code>crossOrigin = true</code> a request will be sent to server using this mode when <code>loadImage</code> or <code>loadImages</code> is used. Default mode is <code>anonymous</code>.</td>
+	</tr>
+	<tr>
+		<td class="lt">ctx / context</td>
+		<td><strong>2D context (read only)</strong><br />
+			The 2D context for the canvas this instance is using.You can refer to the context using both <code>ctx</code> and <code>context</code>.</td>
+	</tr>
+	<tr>
+		<td>deg2rad</td>
+		<td><strong>Float (read only)</strong><br />
+			Convenience factor to calculate degrees to radians. Multiply degrees with this factor to get radians.</td>
+	</tr>
+	<tr>
+		<td class="lt">firstX</td>
+		<td><strong>Integer (read only)</strong><br />
+			The X position when mouse button was held down.</td>
+	</tr>
+	<tr>
+		<td class="lt">firstY</td>
+		<td><strong>Integer (read only)</strong><br />
+			The Y position when mouse button was held down.</td>
+	</tr>
+	<tr>
+		<td>fullScreenMode<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Integer (default 0)</strong><br />
+			Set fullscreen mode, <code>0 = cover</code> (default) which set a new size on the canvas element to fit the screen. <code>1 = zoom</code> which keeps the pixel size of the canvas but scales it using CSS. Use method <code>fullScreen</code> to go full-screen.</td>
+	</tr>
+	<tr>
+		<td class="lt">height</td>
+		<td><strong>Integer (read only)</strong><br />
+			The current height of the canvas. To change size of the canvas use the method <code>resize</code>.</td>
+	</tr>
+	<tr>
+		<td>limitPan</td>
+		<td><strong>Boolean. Default: true</strong><br />
+			Limits panning - when<em> zoom &lt; 1</em> the canvas is translated so that the content is stopped at the canvas edges. If <em>zoom &gt; 1</em> the content will be stopped when outer borders of content reaching the canvas edges. If set to <code>false</code> the canvas can be translated without any restrictions.</td>
+	</tr>
+	<tr>
+		<td>panCursor</td>
+		<td><strong>String. Default: move</strong><br />
+			Specify which cursor to use when <code>panMode = true</code>. Default is the <code>move</code> cursor. To disable easyCanvas from setting a cursor a <code>null</code> can be given.</td>
+	</tr>
+	<tr>
+		<td>panMode</td>
+		<td><strong>Boolean. Default: false</strong><br />
+			If set to <code>true</code> the pan will be translated when mouse button is held down and moved. If <code>limitPan</code> is set to true the pan will only work when <em>zoom !== 1</em>.</td>
+	</tr>
+	<tr>
+		<td>pivotX</td>
+		<td><strong>Float</strong><br />
+			Set or get pivot point for X. The value is given as a fraction where 0.0 is left, 0.5 is center and 1 is right edge. Pivot point is used for determine absolute position to rotate canvas around when using the <code>rotate</code> and <code>zoom</code> methods.</td>
+	</tr>
+	<tr>
+		<td>pivotY</td>
+		<td><strong>Float</strong><br />
+			Set or get pivot point for Y. The value is given as a fraction where 0.0 is top, 0.5 is center and 1 is bottom edge. Pivot point is used for determine absolute position to rotate canvas around when using the <code>rotate</code> and <code>zoom</code> methods.</td>
+	</tr>
+	<tr>
+		<td>prevAngle</td>
+		<td><strong>Float (read only)</strong><br />
+			Contains previous absolute angle given in <em>degrees</em>.  Typically used in the <code>mousemove</code> <em>event</em>.</td>
+	</tr>
+	<tr>
+		<td class="lt">prevStamp</td>
+		<td><strong>Integer (read only)</strong><br />
+			Previous time stamp in absolute milliseconds. Stamps are recorded with each move reported. This can be used to calculate the time between current and previous point in milli-seconds..</td>
+	</tr>
+	<tr>
+		<td class="lt">prevX</td>
+		<td><strong>Integer (read only)</strong><br />
+			Contains the previous recorded point for X. Typically used in the <code>mousemove</code> <em>event</em> to draw a line between current and last point but can be used for any purpose.</td>
+	</tr>
+	<tr>
+		<td class="lt">prevY</td>
+		<td><strong>Integer (read only)</strong><br />
+			Contains the previous recorded point for Y. Typically used in the <code>mousemove</code> <em>event</em> to draw a line between current and last point but can be used for any purpose.</td>
+	</tr>
+	<tr>
+		<td>rad2deg</td>
+		<td><strong>Float (read only)</strong><br />
+			Convenience factor to calculate radians to degrees. Multiply radians with this factor to get degrees.</td>
+	</tr>
+	<tr>
+		<td>record<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Boolean. Default: false</strong><br />
+			Indicate if easyCanvas should record all points per stroke (one stroke starts at <code>mousedown </code>and ends at <code>mouseup</code>). If enabled easyCanvas will record all strokes into an array (see property <code>strokes</code>). Each stroke's first index has a tool index (see property <code>tool</code>) followed by each point in that stroke in x, y order (<code>[toolIndex, x1, y1, x2, y2, .... xn, yn]</code>). The tool index (see property <code>tool</code>) allow you to specify what the stroke is (lines, rectangle,shapes, anything else you want). Record status cannot be changed while recording a stroke (changes are ignored until next stroke).</td>
+	</tr>
+	<tr>
+		<td class="lt">reportSize</td>
+		<td><strong>Boolean. Default: true</strong><br />
+			When window is re-sized easyCanvas will call the <code>onredraw</code> <em>event</em>.</td>
+	</tr>
+	<tr>
+		<td>selectedRect<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Array. Default null<br />
+			</strong>Contains last selected range or <code>null</code> if no selection exist. The rectangle is an <em>Array </em>with <code>[x, y, width, height]</code> of the selected range. The rectangle is affected by grid settings.</td>
+	</tr>
+	<tr>
+		<td>selectionMode<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Boolean. Default: false</strong><br />
+			Enable or disable selection mode. When active mouse <em>events </em>are handled internally and will draw a select border when mouse is clicked and moved. There are three <em>events </em>that will be raised during the selection: <code>onselectstart</code>, <code>onselect</code>, <code>onselectend </code>which contains rectangle for selected region and an extended event.</td>
+	</tr>
+	<tr>
+		<td>selectedRect<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Array (read-only)</strong><br />
+			The <em>Array</em> with the last selected rectangle if <code>selectionMode</code> was set to <code>true</code> and the event not cancelled. The array contains the rectangle as <code>[x, y, width, height]</code>. See <code>selectionMode</code> for more details.</td>
+	</tr>
+	<tr>
+		<td>strokeHeader<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Object or Array or Number or String or Boolean. Default: null</strong><br />
+			Use this property to set a custom header for each stroke recorded with the built-in recorder (see property <code>record</code>). Set it at <code>mousedown</code> callback or at any time before. The header is inserted at  <em>index 1</em> of the stroke array as a single item first (index, 0, being the <em>tool</em> index, see property <code>tool</code> for more details). The data can be anything you would like to store with the stroke such as color, line thickness and so forth. It is important that this is done for each stroke unless you are parsing the stroke array first. To determine if a header was used for a stroke use the length of the array. Even length means a header was inserted, odd length means no header was inserted.</td>
+	</tr>
+	<tr>
+		<td>strokes<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Array.</strong><br />
+			This is an array that contains stroke arrays if property <code>record = true</code>. The array will hold <code>[stroke1array, stroke2array, ..., strokeNarray]</code>. Each entry is simply an array which starts with a tool index followed by optionally a header and then points ordered as <code>[toolIndex [, header], x1, y1, x2, y2, ... xn, yn]</code>. The strokes are recorded internally during mouse operation. A stroke starts with <code>mousedown</code> and ends with <code>mouseup</code>. You may modify the content of the array as it is passive and only adds new strokes without using previous content.</td>
+	</tr>
+	<tr>
+		<td class="lt">trackMove</td>
+		<td><strong>Boolean. Default: false</strong><br />
+			Tells easyCanvas to report mouse moves even if mouse button is not held down. The <code>mousemove</code> <em>event</em> has a property extension <code>isMouseDown</code> which can be used to check if mouse button is held down or not when this event is raised.</td>
+	</tr>
+	<tr>
+		<td>tool<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Integer. Default: 0</strong><br />
+			A tool index that you yourself define what should be <strong>except value 0 (all points) and 1 (box, only start and end point)</strong> which are reserved. The value is recorded if property <code>record = true</code> as the first entry in a stroke array. This allow you specify what shape or operation should be performed for each stroke (ie. draw lines, shapes, anything else). Although integer is specified you may also set this property with strings or anything else you want to use to identify the tool as long as it is storage as part of an Array. Tool index cannot be changed while recording a stroke (changes are ignored until next stroke).</td>
+	</tr>
+	<tr>
+		<td class="lt">width</td>
+		<td><strong>Integer (read only)</strong><br />
+			The current width of the canvas. To change size of the canvas use the method resize.</td>
+	</tr>
+</table>
+<p><a id="methods"></a></p>
+<p><strong>NOTE:</strong> Any other properties on the object are <strong>private</strong> and may or may not be available in the future. Do not use properties or methods that are not described here.</p>
+<h2>Methods</h2>
+<p>Note that method calls can be chained in set mode. Methods used to get current status or is expected  to return other data (for example <code>getOffscreenCanvas</code>) can not be chained.</p>
+<table width="100%" border="0" cellspacing="0" cellpadding="7" class="docTbl">
+	<caption>
+	Methods
+	</caption>
+	<tr>
+		<td>addHotkey(key, isAlt, isCtrl, isShift)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>String or Number. Booleans (optional)</strong><br />
+			Add a hotkey to <span>easyCanvas</span> that triggers the callback <code>onhotkey</code> if detected, The <code>key</code> can be a string representation of the key you want to use as trigger as well as word keys such as &quot;f1&quot;, &quot;home&quot;, &quot;down, &quot;pageup&quot;, &quot;delete&quot; etc. The key can also be a specific key code based on the ASCII representation of the key. The qualifers are optional and defaults to <code>false</code> if not specified. If you try to add a hotkey that already exist the method will throw an error.</td>
+	</tr>
+	<tr>
+		<td>addRegion(regionObject | id, x, y, width, height [, pri])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>regionObject - or - String or number. Floats. Integer.</strong><br />
+			Add a new hit test region. You can provide an existing <em>regionObject</em> (returned from <code>getRegion</code>, <code>testRegion</code> and in <em>events</em>) as well as given the arguments separately. id must be unique. If you try to add a region with same id as an existing region, an error will be thrown. <code>Priority </code>is optional. The region will be tested for when <code>enableRegions = true</code></td>
+	</tr>
+	<tr>
+		<td>antialiasing(boolean)<br />
+			<em>Ver.1.2</em></td>
+		<td><strong>Boolean (optional)</strong><br />
+			Turn on or off anti-aliasing for <em>images</em> drawn to canvas. If no argument is given it returns current state.</td>
+	</tr>
+	<tr>
+		<td class="lt">cancelSelection()<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>None.</strong><br />
+			When currently in a selection (see property <code>selectionMode</code>) this method can be called to cancel it as an option to setting the <em>event</em> flag (at <code>onselect</code>) <code>cancelSelection</code> to <code>false</code>. This method will cancel the selection immediately contrary to setting it with the flag which is dependent on a next mouse move..</td>
+	</tr>
+	<tr>
+		<td class="lt">clear()</td>
+		<td><strong>None</strong><br />
+			Clears the canvas. If <code>clearColor</code> is specified as other than <code>null</code> the clear method will use <code>fillRect</code> instead of <code>clearRect</code> to clear the canvas with that color.</td>
+	</tr>
+	<tr>
+		<td>clearBackground([array | x, y, width, height])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Array or Integers (optional)</strong><br />
+		This method is used when auto-clear is activated either manually or automatically although this method is not necessary to use with mouse event callbacks as clearing is handled automatically. This clears the background with latest state of the auto-clearing. If a region is specified as an array <code>[x, y, width, height]</code> or single values it will only clear this region. Also see <code>startAutoClear</code>, <code>updateAutoClear</code>, <code>endAutoClear</code> methods as well as the <code>autoClear</code> property. Also see <code>getRect</code> to calculate a region based on absolute coordinates.<br />
+		IMPORTANT: The position values has to be Integer (not floats) or you might experience lines and tearing.</td>
+	</tr>
+	<tr>
+		<td class="lt">clipCoords(boolean)</td>
+		<td><strong>Boolean. Default: false</strong><br />
+			If set to <code>true</code> the mouse coordinates will be clipped at canvas boundary. If <code>false</code> the window coordinates are used. This will probably be changed to a property in the future when observers become more common in browsers. Although easyCanvas uses observers for properties such as <code>limitPan</code> and <code>panMode</code> they are not used in such way they are dependent on browser support. If no argument is given the method return current status.</td>
+	</tr>
+	<tr>
+		<td>cssClass(cssClassName)</td>
+		<td><strong>String</strong><br />
+			Set a CSS class for the canvas element. To remove a class use <code>null</code> as value. If no argument is given the method will return current CSS class set on canvas.</td>
+	</tr>
+	<tr>
+		<td class="lt">download([filename] [, type] [, arg)]</td>
+		<td><strong>String. String. Float. All optional</strong><br />
+			Download current content in canvas as an image file. The user will be prompted with a save dialog with the filename set and image type. Type can currently be <code>png</code>, <code>jpg</code> or <code>jpeg</code>. If none is specified the default will be <code>png</code>. If <code>jpg</code> or <code>jpeg</code> is specified the arg can be used to set compression, a value between 0.0 and 1.0. If no extension is given to the filename the filename will automatically be appended with an extension based on image type. If no filename is given the filename will default to <em>Untitled</em>. Works with browsers which support the new HTML attribute <code>download</code> for <code>anchor</code> elements.</td>
+	</tr>
+	<tr>
+		<td>drawImageProp(image [, x, y, width, height [, offsetX, offsetY]])<br />
+			<em>Ver. 1.1 / 1.2</em></td>
+		<td><strong>Image. Floats (</strong><strong>optional).</strong><br />
+			Draws a source image <code>(Image, Canvas, Video, SVG</code>) element to destination X and Y at dimension width and height. The image is scaled proportionally to fit inside the destination area and centered if necessary. The size arguments are optional.If omitted the method will use the canvas' size as destination.<br />
+			New from version 1.2 is <code>offsetX</code> and <code>offsetY</code>. Defaults to <code>0.5</code> (center). <code>0</code> places the image to the left / top while <code>1</code> places the image to the right / bottom.<br />
+			Note: Even though you can use float values we recommend you only use integer values.</td>
+	</tr>
+	<tr>
+		<td>drop(active [, maxSize, maxItems, extensions])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Boolean. Integer (optional). Integer (optional). Array (optional)</strong><br />
+			Activates drop mode for this instance so images can be dropped onto the canvas from user's local computer. This mode can be turned on and off at any time (except when handling an ongoing drop). You can specify max size as bytes, max number of items to handle (no order garanteed) as well as define allowed extensions. Only image types are allowed internally independant of extensions. When a drop occur two <em>events</em> are fired if callbacks are set: <code>ondrop</code> and <code>ondropprogress</code> (if <code>ondrop</code> is not set the function ignores the drop). The drop <em>event</em> handler receives a list with the <code>Image</code> objects and original filename as well as a list of items not loaded due to errors or restrictions.</td>
+	</tr>
+	<tr>
+		<td>endAutoClear()<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>None.</strong><br />
+			Ends a manually started auto-clear. See <code>startAutoClear</code> for more details. If none was started the method returns gracefully. Note: do not use this when the automatic <code>autoClear</code> property is set to <code>true</code>.</td>
+	</tr>
+	<tr>
+		<td>fullScreen(active)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Boolean (optional)</strong><br />
+			Sets the canvas' fullscreen mode, <code>true</code> to go fullscreen, <code>false</code> to return to normal mode. If no argument is given it will return current mode. The method is cross-compatible for browsers which support fullscreen mode. Internally easyCanvas handle auto-clear buffers if in use (you need to update the buffer if you use manual auto-clear after a mode has changed) as well as setting the canvas in the correct position and size. Note: canvas will most likely change size so be prepared for this in code.</td>
+	</tr>
+	<tr>
+		<td>getAutoClear()<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>None.</strong><br />
+			Returns an off-screen  object that represents the auto-clear buffer. You may update this buffer manually. If <code>autoClear = false</code> and there has been no call to <code>startAutoClear()</code>, or <code>endAutoClear()</code> has been called this method returns <code>null</code>.</td>
+	</tr>
+	<tr>
+		<td>getGridCell(x, y)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Floats.</strong><br />
+			When grid is set this function will return the index of horizontal and vertical call based on mouse position. The returned value is an array with the cell indexes ordered as <code>[x, y]</code>.</td>
+	</tr>
+	<tr>
+		<td>getGridPosition(cellx, celly)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Integers</strong><br />
+			Returns the position based of cell with index <code>cellx</code> and <code>celly</code> if grid is set. The position is returned as an <em>Array</em> <code>[x, y]</code>. If no grid is set the function will return <code>[0, 0]</code>.</td>
+	</tr>
+	<tr>
+		<td>getGridSnapshot([maxWidth, maxHeight])<br />
+			<em>Ver. 1.3</em></td>
+		<td><strong>Integers. Optional</strong><br />
+			Returns a 2-dimensional array with grid positions based on current active grid. If no max width or height is defined the dimension of the canvas will be used as limits. The returned array consists of arrays with rows which each contains a pair of x and y coordinates for that grid point. If no grid is active the method will return <code>null</code>.</td>
+	</tr>
+	<tr>
+		<td>getGridX(x)<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Float.</strong><br />
+			When grid is enabled the mouse positions are quantized. However, for other methods such as drawing operation on the canvas are not quantized. To also quantize those coordinates this function can be used. It uses the current grid setting. If no grid is set it returns the original value. If grid is set it will return quantized integer value for X.</td>
+	</tr>
+	<tr>
+		<td>getGridY(y)<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Float.</strong><br />
+When grid is enabled the mouse positions are quantized. However, for other methods such as drawing operation on the canvas are not quantized. To also quantize those coordinates this function can be used. It uses the current grid setting. If no grid is set it returns the original value. If grid is set it will return quantized integer value for Y.</td>
+	</tr>
+	<tr>
+		<td class="lt">getOffScreenCanvas([image] | [width, height])</td>
+		<td><strong>Integer. Integer (optional) or Image (optional)</strong><br />
+			Get an off-screen canvas with context. The method returns an <a href="#offscreenobject">off-screen object</a>. If no size is defined it will use the same size as the instance calling this method. You can optionally pass in an <code>Image</code>, <code>Canvas</code>, <code>Video</code> or a <code>SVG</code> element. In this case the size from this element is used as size for the new canvas and the element is draw into the canvas as well.</td>
+	</tr>
+	<tr>
+		<td>getPixel(x, y)<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Floats.</strong><br />
+			Returns an array with pixel color information for that point on canvas . The array is defined as <code>[R, G, B, A]</code>.<br />
+			IMPORTANT: Getting pixels will not work if canvas contains any images drawn to it orginating from a different origin or from the <code>file://</code> protocol due to CORS. This is a security feature implemented by browsers and is not related to easyCanvas.</td>
+	</tr>
+	<tr>
+		<td>getRect(x1, y1, x2, y2 [, inclusive])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Floats.</strong> <strong>Boolean (optional, default = true)</strong><br />
+			Returns an <code>Array</code> with a bounding rectangle <code>[x, y, width, height]</code> based on the absolute coordinates given the function. The function handles negative coordinates and adjusts the position, width and height accordingly.<br />
+			<strong>			Note: All points are <em>inclusive</em></strong> (ie. if x1=x2 then width = 1 etc.) unless <code>inclusive = false</code>.</td>
+	</tr>
+	<tr>
+		<td>getRegion(id)<br />
+			<em>Ver. 1.,2</em></td>
+		<td><strong>String or Number</strong><br />
+			Returns the hit region with the given <code>id</code> or <code>null</code> if not found.</td>
+	</tr>
+	<tr>
+		<td>getRegions()<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>None.</strong><br />
+			Returns all regions added to this easyCanvas instance. The array returned consist <em>regionObject</em>s sorted by priority and/or time-stamp from when they where created (or updated in case where arguments are given manually).</td>
+	</tr>
+	<tr>
+		<td>getVelocity([smoothing])<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Integer (optional)</strong><br />
+Calculates an accurate velocity factor useful on <code>mouseup</code> events. Only available if property <code>calcVelocity = true</code>. The <code>smoothing</code> is used to smooth the velocity records using moving average. The higher number the more older records are considered. Default value is 3. The method uses all internally recorded velocity vectors during <code>mousemove</code> <em>events</em>. The records are cleared after a short timeout so you can also use this to move objects around, pause and get a proper 0 value for no movement. Optimally you need to combine the value with a strength value and optionally an angle.</td>
+	</tr>
+	<tr>
+		<td>grid([[[[width] [,height]] [, offsetX]] [, offsetY])<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>Integers. Optional</strong><br />
+			Sets a grid that quantizing the mouse positions. If only X is set then this value will be used for <code>height</code> as well and offsets are 0. If <code>width</code> and <code>height</code> are defined and only <code>offsetX</code> then <code>offsetX</code> will be used for <code>offsetY</code>. If no arguments are given the method returns current grid settings as an array <code>[gridX, gridY, offsetX, offsetY]</code>. Set 0 to reset grid (ie. <code>grid(0)</code>). Grid size must be &gt; 0 integer values. Offsets can be negative and positive integer values. The grid works with zoom, pan and rotation.</td>
+	</tr>
+	<tr>
+		<td>hasHotkey(key, isAlt, isCtrl, isShift)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>String or Number. Booleans (optional)</strong><br />
+			Check if a hotkey is specified with <code>addHotkey</code>. If found the function return <code>true</code>, otherwise <code>false</code>. See <code>addHotkey</code> for more detals.</td>
+	</tr>
+	<tr>
+		<td class="lt">line(x1, y1, x2, y2 [,lineWidth] [,style])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Float. Float. Float. Float. Float (optional). String (optional).</strong><br />
+			A short-hand method for <code>beginPath</code> / <code>moveTo</code> / <code>lineTo</code> / <code>stroke</code>. As this is the most common way to do paint operations with free-hand drawings this become useful for many purposes. You can optionally set <code>lineWidth</code> and <code>strokeStyle</code>. If no value are given for these they are ignored and the current settings are used. If provided the method will modify current settings. <strong>NOTE: From version 1.2 this method replaces </strong><code>strokeLine</code>.</td>
+	</tr>
+	<tr>
+		<td>loadImage(url, callbackSuccess [, callbackError})<br />
+			<em>Ver. 1.1</em></td>
+		<td><strong>String. Function. Function (optional)</strong><br />
+			Properly loads an image from an URL providing a callback mechanism for successful and unsuccessful calls. Callback for errors is optional but recommended to be able to detect errors while loading images. The callbacks has the signature <code>callback(e</code>) where <code>e</code> contains the properties <code>image</code> for the loaded image (or <code>null</code> if not successful), the original <code>url</code> and a <code>timeStamp</code>.<br />
+			NOTE: From version 1.2 the signature for the callbacks has  changed to the above described.</td>
+	</tr>
+	<tr>
+		<td>loadImages(urls, callback [, callbackProgress])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Array. Function. Function (optional)</strong><br />
+			Similar to <code>loadImage</code> but loads an entire array of images before it invokes callback. The callback will be called with an <em>event</em> with properties <code>images</code> that contains all the <em>Image</em> objects or <code>null</code> in the position if an error ocurred and <code>urls</code> with the original url array given to the method. The arrays are ordered in the same order as the original url array.<br />
+			<br />
+			You can use the callback for progress to provide a progress bar or something similar in your app. The callback has signature <code>callbackProgress(e)</code>. The <em>event</em> contains the properties <code>current </code>which is a 1-based index (subtract 1 to get the array index) as it is meant as a counter rather than an index,<code> total</code> with total number of urls in the list to be loaded, <code>image </code>which is the image object just loaded. If <code>image</code> is <code>null</code> an error ocurred. The image here is the same that will be in the final array. The event also has a <code>timeStamp</code> property.</td>
+	</tr>
+	<tr>
+		<td class="lt">padding(top, right, bottom, left)</td>
+		<td><strong>Integers. Defaults: 0</strong><br />
+			Add padding to the element which is <em>subtracted </em>from the width and height specified for the canvas so that the <em>total size</em> equals the original set width and height. Currently all arguments must be given. In none are given the current padding settings are returned as an array in this order<code>[top, right, bottom, left]</code>.</td>
+	</tr>
+	<tr>
+		<td class="lt">pan([deltaX, deltaY, [absolute]])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Floats (optional). Boolean (optional)</strong><br />
+			Pan the canvas with delta X and Y values, or set pan to an <em>absolute</em> position if <code>absolute</code> flag is set to <code>true</code>. If no arguments are given the current <em>absolute</em> pan settings are returned.</td>
+	</tr>
+	<tr>
+		<td class="lt">remove()</td>
+		<td><strong>None</strong><br />
+			Removes the canvas from parent element and invalidates the canvas element and context and cleans up event listeners and other resources. If original element was an existing canvas element then this is left intact.</td>
+	</tr>
+	<tr>
+		<td>removeHotkey(key, isAlt, isCtrl, isShift)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>String or Number. Booleans (optional)</strong><br />
+			Removes a hotkey previously specified with <code>addHotkey</code>. The signature of the arguments must be identical to those given to <code>addHotkey</code>. If the hotkey does not exist the method will throw an error.</td>
+	</tr>
+	<tr>
+		<td>removeRegion(id)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>String or Number</strong><br />
+			Removes an existing hit region. See <code>addRegion</code>.</td>
+	</tr>
+	<tr>
+		<td>renderTool0([color [,lineWidth]])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>String (optional). Float (optional when color is specified).</strong><br />
+			Convenience method to render recorded points with the internal recorder (see property <code>record</code>). It will render points only (tool 0 - all other tools are ignored, see property <code>tool</code>) with optionally <em>color</em> and <em>line width</em> set. Defaults to current color and line width if not specified. You may use <code>null</code> or <code>undefined</code> for <em>color </em>if you wish only to set <em>line width</em>.</td>
+	</tr>
+	<tr>
+		<td>reset()</td>
+		<td><strong>None</strong><br />
+			Clears pan, zoom and rotate and set them back to default values. The <code>onredraw </code>callback is called when using this method.</td>
+	</tr>
+	<tr>
+		<td width="35%" class="lt">resize(newWidth, newHeight)</td>
+		<td width="65%"><strong>Integers</strong><br />
+			Set new size of canvas. If <code>autoResize</code> is set to true these values will be overriden with the size of the window when window is resized.</td>
+	</tr>
+	<tr>
+		<td>rotate([angle])</td>
+		<td><strong>Float. Default: 0.</strong><br />
+			Rotates the canvas to absolute angle given as degrees. If no argument is given the current rotation is given in degrees. When rotate is used the <code>onredraw</code> callback is called.</td>
+	</tr>
+	<tr>
+		<td>setDash([pattern [, offset]])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Array or integer (optional). Integer (optional when pattern is defined)</strong><br />
+			Set line-dash pattern cross-browser. <code>pattern </code>is an <em>Array</em> or <em>Integer </em>which describes how long the dashes should be. If integer is used that same value is used for both on and off dashes. If array is used more complex patterns can be defined. <code>offset</code> is used to offset start point of the line dash (eg. used for &quot;walking ants&quot;). Array may be <code>null</code> or <code>undefined</code> if you wish to only use the <code>offset</code>.</td>
+	</tr>
+	<tr>
+		<td>setPixel(x, y, color)<br />
+			<em>Ver. 1.1</em></td>
+		<td><p><strong>Float. Float. Array.</strong><br />
+			Sets a pixel on the canvas at position X and Y with color defined as an Array consisting of either RGB <code>[R, G, B]</code> or RGBA <code>[R, G, B, A]</code> values. If only RGB the alpha component will be set to 255 (fully opaque). If each value must be between 0 and 255.<br />
+			IMPORTANT: Getting pixels will not work if canvas contains any images drawn to it orginating from a different origin or from the <code>file://</code> protocol due to CORS. This is a security feature implemented by browsers and is not related to easyCanvas.</p></td>
+	</tr>
+	<tr>
+		<td class="lt">startAutoClear()<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>None.</strong><br />
+			Manually start a auto-clear session. This is useful for games or when using <code>trackMove</code> where things are updated in the background. When auto-clear is initiated it will clear the background with what was there when initiated everytime <code>clearBackground</code> is called. When inside an auto-clear session <code>updateAutoClear</code> can be called to record current state of the canvas. This is more efficient than starting and ending an auto-clear session. See <code>endAutoClear</code> for how to end a session.<br />
+			<strong>Note</strong>: there is no need to use the manual auto-clear methods when you are updating graphics via the mouse event handlers as this is automatically taken care of for you by simply using the property <code>autoClear = true</code>. However, if you wish to use both and  you manually start auto-clear you will need to set <code>autoClear = true</code> to have mouse <em>event </em>callbacks work simultaneously. You can manually handle all stages your self also inside the mouse <em>event</em> callbacks - this is slightly a little more efficient than the automatic handling as there is no need to allocate a buffer for each <code>mousedown</code> <em>event</em> provided you use <code>updateAutoClear</code>.</td>
+	</tr>
+	<tr>
+		<td class="lt">strokeLine(x1, y1, x2, y2 [,lineWidth] [,style])<br />
+			<em>Ver. 1.1 (deprecated from ver. 1.2, use </em><code>line</code><em> instead)</em></td>
+		<td><strong>Float. Float. Float. Float. Float (optional). String (optional).</strong><br />
+			A short-hand method for <code>beginPath</code> / <code>moveTo</code> / <code>lineTo</code> / <code>stroke</code>. As this is the most common way to do paint operations with free-hand drawings this become useful for many purposes. You can optionally set <code>lineWidth</code> and <code>strokeStyle</code>. If no value are given for these they are ignored and the current settings are used. If provided the method will modify current settings.</td>
+	</tr>
+	<tr>
+		<td>style(name, value)</td>
+		<td><strong>Strings</strong><br />
+			Set a style property to the canvas element where name is the style name as used in JavaScript and value is the value. To remove a style set <code>value </code>to <code>null</code>. If only <code>name</code> is provided the method will return the value for the name given. easyCanvas will prefix the style for you  with vendor specific prefixes if necessary.</td>
+	</tr>
+	<tr>
+		<td class="lt">testRegion(x, y)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Floats.</strong><br />
+			Returns a <em>regionObject</em> if <code>x</code> and <code>y</code> was inside it. For overlapping regions the one with highest priority will be returned. If not in any regions a <code>null</code> will be retuned.</td>
+	</tr>
+	<tr>
+		<td class="lt">textSelect(mode)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Boolean.</strong><br />
+			Turn on (<code>true</code>) or off text selection on the <code>body</code> <em>element</em>. This to prevent text-selection taking place in the browser while for example drawing on the canvas. This is not a W3C standard and may have various results in different browsers even though it's supported in most major browsers,</td>
+	</tr>
+	<tr>
+		<td class="lt">update()</td>
+		<td><strong>None</strong><br />
+			Invokes the <code>onredraw </code>callback.</td>
+	</tr>
+	<tr>
+		<td>updateAutoClear()<br />
+			<em>Ver 1.2</em></td>
+		<td><strong>None.</strong><br />
+			If auto-clear is active, either manually activated by <code>startAutoClear</code> or using the automatic auto-clearing by the property <code>autoClear</code>, this method updates the content to be used as clearing at the next call.</td>
+	</tr>
+	<tr>
+		<td>updateRegion(regionObject | id, x, y, width, height [, pri])<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>regionObject - or - String or number. Floats. Integer.</strong><br />
+Updates an existing hit test region. You can provide an existing <em>regionObject</em> (returned from <code>getRegion</code>, <code>testRegion</code> and in <em>events</em>) as well as given the arguments separately. Priority is optional. The region will be tested for when <code>enableRegions = true</code>. Use update to change position or priority.</td>
+	</tr>
+	<tr>
+		<td>zoom([x [,y ]])</td>
+		<td><strong>Float, Float (optional). Default: 1, 1</strong><br />
+			Scales the canvas in absolute scale. If <code>y</code> is omitted <code>x</code> will be used for both. If no argument is given the method will return current scale as an array <code>[x, y]</code>. When zoom is used the <code>onredraw</code> callback is called.</td>
+	</tr>
+</table>
+<p><a id="events"></a></p>
+<p><strong>NOTE:</strong> Any other methods on the object are <strong>private</strong> and may or may not be available in the future. Do not use properties or methods that are not described here.</p>
+<h2>Events</h2>
+<table width="100%" border="0" cellspacing="0" cellpadding="7" class="docTbl">
+	<caption>
+	Events
+	</caption>
+	<tr>
+		<td>onbeforepan(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+Triggered before a pan is performed. The <em>event</em> object contains the properties <code>oldDeltaX</code> and <code>oldDeltaY</code> for the current values, <code>newDeltaX</code> and <code>newDeltaY</code> for the destination values, <code>isAbsolute</code> (boolean) if the <code>pan()</code> method was called with absolute settings as well as <code>timeStamp</code>.</td>
+	</tr>
+	<tr>
+		<td>onbeforerotate(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Triggered before a rotation takes place. The <em>event</em> object contains the properties <code>oldAngle</code> which is current angle, <code>newAngle</code> which is destination angle in addition to <code>timeStamp</code>. If the new value is the same as the old this callback is not triggered.</td>
+	</tr>
+	<tr>
+		<td>onbeforezoom(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Triggered before a zoom takes place. The <em>event</em> object contains the properties <code>oldZoomX</code> and <code>oldZoomY</code> which is current zoom, <code>newZoomX</code> and <code>newZoomY</code> which are destination zoom, in addition to <code>timeStamp</code>. If the new values are the same as the old values this callback is not triggered.This callback is also triggered using automatic panning (<code>panMode</code>).</td>
+	</tr>
+	<tr>
+		<td>ondrop(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Handler for drops onto canvas when drop mode is active (see method <code>drop</code>). The handler is given an <em>event </em> with the successfully loaded images (entries can be <code>null</code> if an error occured) as well as an array with the corresponding original file names and an Array with error objects (<code>filename</code>, <code>length</code>, <code>index</code>, <code>maxSize</code>, <code>maxItems</code>) as properties on the event (images, filesnames, errors). The <code>errors</code> Array contains entries if some of the files could not be loaded due to error or some limitation (max size, max number of items). Additional properties are <code>total</code> which is the number of files dropped in total, <code>count</code> which is number of files actually loaded (number of errors is <code>total - count</code>) and <code>timeStamp</code>.</td>
+	</tr>
+	<tr>
+		<td>ondropprogress(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event</strong><br />
+			Can be used for multi-image drops if you want to provide user with some progress bar or similar. As dropping local files is a relative fast operation this may have limited usability. The event contains the properties <code>current</code> which is the number (not index) of the image just loaded, <code>Image</code> object or <code>null</code> if not successful, <code>total</code> number of files dropped, <code>filename</code> of the file as well as a <code>timeStamp</code>.</td>
+	</tr>
+	<tr>
+		<td>ondropstart(event)<br />
+			<em>Ver.1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Callback when loading dropped files begin. The event contains the properties <code>total</code> which is the number of files dropped and a <code>timeStamp</code>. The actual loaded images may vary depending of restrictions such as mime type (internal check that check if mime-type if <code>image</code>), extension, image size and number of items.</td>
+	</tr>
+	<tr>
+		<td>onerror(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Common error handler. Event is an object with properties <code>source</code>, <code>message</code> and <code>timeStamp</code>. If a callback isn't defined the error will be thrown instead. Errors during image loading are handled separately with the loader's callback if provided, else the error is channeled to here..</td>
+	</tr>
+	<tr>
+		<td>onfullscreen(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Called when fullscreen mode changes. The event has two properties: <code>isFullscreen</code> which is a <em>boolean</em> indicating that mode is currently in fullscreen (<code>true</code>) or not (<code>false</code>), as well as a <code>timeStamp</code>.</td>
+	</tr>
+	<tr>
+		<td>onhotkey(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			This callback is triggered if a hotkey specified with <code>addHotkey</code> is pressed. The <em>event</em> object contains properties <code>key</code> the original key given to <code>addHotkey</code>, <code>keyCode</code> the ASCII represenation of that key, <code>isAlt</code>, <code>isCtrl</code> and <code>isShift</code> as booleans set to <code>true</code> if any of the modifier keys was held during the key press, as well as <code>timeStamp</code>.</td>
+	</tr>
+	<tr>
+		<td>onmousedown(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			From version 1.2 the signature for the callback has changed to conform with traditional event signatures. The major change is that the <code>x</code> and <code>y</code> arguments are now part of the <em>event </em>instead and the original <em>event </em>is moved to property <code>originalEvent</code>. To upgrade code simply refer to <code>e.x</code> and <code>e.y</code> instead.<br />
+			<table width="100%" border="0" cellspacing="0" cellpadding="5">
+				<tr>
+					<td>originalEvent</td>
+					<td>The original event object</td>
+				</tr>
+				<tr>
+					<td width="20%">relativeX</td>
+					<td width="80%">Usually the same as the <code>x</code> that is passed to the callback function, but not affected by grid,</td>
+				</tr>
+				<tr>
+					<td>relativeY</td>
+					<td>Usually the same as the <code>y</code> that is passed to the callback function, but not affected by grid,</td>
+				</tr>
+				<tr>
+					<td>timeStamp</td>
+					<td>Time stamp at the moment mouse down was detected</td>
+				</tr>
+				<tr>
+					<td>x</td>
+					<td>Horizontal mouse position at mouse down corrected for canvas, pan, rotation and zoom</td>
+				</tr>
+				<tr>
+					<td>y</td>
+					<td>Vertical mouse position at mouse down corrected for canvas, pan, rotation and zoom</td>
+				</tr>
+			</table></td>
+	</tr>
+	<tr>
+		<td class="lt">onmousedown(x, y, extEvent)</td>
+		<td><strong>Integer. Integer. Original extended event</strong><strong> (IMPORTANT: only for versions &lt; 1.2 and LT)</strong><br />
+			When mouse button is clicked this callback is called containing the mouse position relative to canvas as well as the original unmodified event object.</td>
+	</tr>
+	<tr>
+		<td>onmousemove(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+From version 1.2 the signature for the callback has changed to conform with traditional event signatures. The major change is that the <code>x</code> and <code>y</code> arguments are now part of the <em>event </em>instead and the original <em>event </em>is moved to property <code>originalEvent</code>. To upgrade code simply refer to <code>e.x</code> and <code>e.y</code> instead.<br />
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+	<tr>
+		<td>angle</td>
+		<td>Absolute angle between current and previous point in degrees. Only available if <code>calcAngle = true</code></td>
+	</tr>
+	<tr>
+		<td>count</td>
+		<td>Same as property <code>count</code>. Number of points since mouse down including mouse down.</td>
+	</tr>
+	<tr>
+		<td width="20%">distance</td>
+		<td width="80%">distance (float) in pixels between current and previous point. Only available if <code>calcDistance = true</code></td>
+	</tr>
+	<tr>
+		<td>firstAngle</td>
+		<td>Angle between first point and current point. Only available if <code>calcAngle = true</code>.</td>
+	</tr>
+	<tr>
+		<td>firstDistance</td>
+		<td>Distance between first point and the last point. Only available if <code>calcDistance = true</code></td>
+	</tr>
+	<tr>
+		<td>isMouseDown</td>
+		<td>If mouse button is held down or not. Only useful when<code> trackMove = true</code>.</td>
+	</tr>
+	<tr>
+		<td>maxVelocity</td>
+		<td>Maximum velocity since mouse button was held down to current point. Only available if <code>calcVelocity = true</code>.</td>
+	</tr>
+	<tr>
+		<td>originalEvent</td>
+		<td>The original event object</td>
+	</tr>
+	<tr>
+		<td>relativeAngle</td>
+		<td>Relative angle between current and previous point in degrees. Only available if <code>calcAngle = true</code>.</td>
+	</tr>
+	<tr>
+		<td>relativeX</td>
+		<td>Usually the same as the <code>x</code> that is passed to the callback function, but not affected by grid,</td>
+	</tr>
+	<tr>
+		<td>relativeY</td>
+		<td>Usually the same as the <code>y</code> that is passed to the callback function, but not affected by grid,</td>
+	</tr>
+	<tr>
+		<td>timeStamp</td>
+		<td>Time stamp at the moment mouse down was detected</td>
+	</tr>
+	<tr>
+		<td>totalDistance</td>
+		<td>total distance (float) in pixels from mouse button was held to current point. Only available if <code>calcDistance = true</code>.</td>
+	</tr>
+	<tr>
+		<td>velocity</td>
+		<td>Velocity between current and previous point. Only available if <code>calcVelocity = true</code>.</td>
+	</tr>
+	<tr>
+		<td>x</td>
+		<td>Horizontal mouse position at mouse down corrected for canvas, pan, rotation and zoom</td>
+	</tr>
+	<tr>
+		<td>y</td>
+		<td>Vertical mouse position at mouse down corrected for canvas, pan, rotation and zoom</td>
+	</tr>
+</table></td>
+	</tr>
+	<tr>
+		<td class="lt">onmousemove(x, y, extEvent)</td>
+		<td><strong>Integer. Integer.Original extended event</strong><strong> (IMPORTANT: only for versions &lt; 1.2 and LT)</strong><br />
+			Called when mouse button is held down on canvas or <code>trackMove</code> is set to <code>true</code>. Current mouse position relative to canvas is given as well as en extended event object  (see next section for details on the event). </td>
+	</tr>
+	<tr>
+		<td>onmouseup(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+From version 1.2 the signature for the callback has changed to conform with traditional event signatures. The major change is that the <code>x</code> and <code>y</code> arguments are now part of the <em>event </em>instead and the original <em>event </em>is moved to property <code>originalEvent</code>. To upgrade code simply refer to <code>e.x</code> and <code>e.y</code> instead.<br />
+<table width="100%" border="0" cellspacing="0" cellpadding="5">
+	<tr>
+		<td>count</td>
+		<td>The total number of points registered since mouse down. Same as instance property <code>count</code>.</td>
+	</tr>
+	<tr>
+		<td>firstAngle (totalAngle)</td>
+		<td>Angle between first point (firstX / firstY) and the last point. Only available if <code>calcAngle = true</code>. From version 1.2 this property has changed name from <code>totalAngle</code> to <code>firstAngle</code>.</td>
+	</tr>
+	<tr>
+		<td>firstDistance</td>
+		<td>Distance between first point and the last point. Only available if <code>calcDistance = true</code></td>
+	</tr>
+	<tr>
+		<td>lastAngle</td>
+		<td>Last angle if mouse has been moved between mousedown and mouseup, and <code>calAngle = true</code></td>
+	</tr>
+	<tr>
+		<td>maxVelocity</td>
+		<td>Maximum velocity since mouse button was held down to current point. Only available if <code>calcVelocity = true</code> and mouse have been moved between <code>mousedown</code> and <code>mouseup</code>..</td>
+	</tr>
+	<tr>
+		<td>originalEvent</td>
+		<td>The original event object</td>
+	</tr>
+	<tr>
+		<td>relativeX</td>
+		<td>Usually the same as the <code>x</code> that is passed to the callback function, but not affected by grid,</td>
+	</tr>
+	<tr>
+		<td>relativeY</td>
+		<td>Usually the same as the <code>y</code> that is passed to the callback function, but not affected by grid,</td>
+	</tr>
+	<tr>
+		<td>timeStamp</td>
+		<td>Time stamp at the moment mouse down was detected</td>
+	</tr>
+	<tr>
+		<td width="20%">totalDistance</td>
+		<td width="80%">total distance (float) in pixels from mouse button was held to current point. Only available if <code>calcDistance = true</code></td>
+	</tr>
+	<tr>
+		<td>x</td>
+		<td>Horizontal mouse position at mouse down corrected for canvas, pan, rotation and zoom</td>
+	</tr>
+	<tr>
+		<td>y</td>
+		<td>Vertical mouse position at mouse down corrected for canvas, pan, rotation and zoom</td>
+	</tr>
+</table></td>
+	</tr>
+	<tr>
+		<td class="lt">onmouseup(x, y, extEvent)</td>
+		<td><strong>Integer. Integer. Original extended event (IMPORTANT: only for versions &lt; 1.2 and LT)</strong><br />
+			Called when mouse button is released provided mouse button was held down over canvas. This even if mouse button is outside canvas area. The current mouse position relative to canvas is given as well as an extended event object (see next section for details on the event).</td>
+	</tr>
+	<tr>
+		<td>onmousewheel(event)<br />
+			<em>Ver.1.2</em></td>
+		<td><strong>Event</strong><br />
+			When the mouse scroll wheel is used this <em>event</em> callback is raised with a property <code>delta</code> with delta value corrected for the different browser implementations. The <em>event</em> is also provided with the <code>x</code> and <code>y</code> position of the mouse at scroll as well as an <code>timeStamp</code>,<code> relativeX</code>, <code>relativeY</code> and the <code>originalEvent</code><em>.</em></td>
+	</tr>
+	<tr>
+		<td>onpan(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Triggered when a pan is performed. The <em>event</em> object contains the properties <code>oldDeltaX</code> and <code>oldDeltaY</code> for the old values, <code>newDeltaX</code> and <code>newDeltaY</code> for the current values, <code>isAbsolute</code> (boolean) if the <code>pan()</code> method was called with absolute settings as well as <code>timeStamp</code>. This callback is also triggered using automatic panning (<code>panMode</code>).</td>
+	</tr>
+	<tr>
+		<td width="31%" class="lt">onredraw(boolean)</td>
+		<td width="69%"><strong>Boolean.</strong><br />
+			Called when canvas need to be redrawn due to resize, zoom, pan or rotation. You should always have your main redraw function called from this callback. The boolean flag indicates if the callback is due to a window resize if <code>reportResize</code> is set to <em>true </em>(if which case flag will be <em>true</em>) or invoked by <code>resize</code>, <code>pan</code>, <code>rotate</code>, <code>zoom</code> or <code>update</code> (in which case flag will be <em>false</em>).<br />
+	<strong>NOTE</strong>: When this callback is set within the first 250 milliseconds after the easyCanvas instance is created it will be called a first time to allow you to use this callback also to initialize your content.</td>
+	</tr>
+	<tr>
+		<td>onregion(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Triggered when a hit region was clicked and <code>enableRegions = true</code>. The <em>event</em> contains the following properties: <code>region</code> which is the region object (see <em>regionObject</em> below for details) as well as a <code>timeStamp</code> and <code>x</code> and <code>y</code> position. Note that if you click down outside a region or over another region than the one that is below the cursor at mouse up, the event won't trigger - ala a button.</td>
+	</tr>
+	<tr>
+		<td>onregiondown(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+Triggered when mouse button is clicked and held over a hit region and <code>enableRegions = true</code>. The <em>event</em> contains the following properties: <code>region</code> which is the region object (see <em>regionObject</em> below for details) as well as a <code>timeStamp</code> and <code>x</code> and <code>y</code> position.</td>
+	</tr>
+	<tr>
+		<td>onregionover(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+Triggered when mouse position is over a hit region and <code>enableRegions = true</code>. Note: The event is only triggered when mouse button is up and instance not in <code>trackMove</code> mode. The <em>event</em> contains the following properties: <code>region</code> which is the region object (see <em>regionObject</em> below for details) as well as a <code>timeStamp</code> and <code>x</code> and <code>y</code> position.</td>
+	</tr>
+	<tr>
+		<td>onrotation(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+Triggered after a rotation took place. The <em>event</em> object contains the properties <code>oldAngle</code> which is old angle, <code>newAngle</code> which is now the current angle in addition to <code>timeStamp</code>. If new angle is the same as the old value this callback is not triggered.</td>
+	</tr>
+	<tr>
+		<td>onselect(event)<br />
+			<em>Ver.1.2</em></td>
+		<td><strong>Event</strong><br />
+			This callback is called during mouse move and when property <code>selectionMode = true</code> and mouse button is held down. The event contains the properties <code>x</code> and <code>y</code> for start position (note: the start position will change if user selects a &quot;negative&quot; rectangle, ie. the top left corner is above or to the left of bottom right corner), <code>width</code> and <code>height</code>, <code>mouseX</code> and <code>mouseY</code> for the mouse position as well as <code>timeStamp</code> and <code>originalEvent</code>.<br />			 
+			<strong>Note for custom drawing:</strong> The event also contain  a property <code>selfDraw </code>which initially is set to <code>false</code>.
+			If you want to render the selected rectangle yourself you must set this flag to <code>true</code> and also do the drawing within the callback. Clearing of the background for each time is handled internally.<br />
+			<strong>Note</strong>: You can cancel a select operation by setting the property <code>cancelSelection</code> to <code>true</code> however, it is better to use the method <code>cancelSelection</code> for this purpose as that will cancel immediately while using the flag is dependent on a next mouse move.</td>
+	</tr>
+	<tr>
+		<td>onselectend(event)<br />
+			<em>Ver.1.2</em></td>
+		<td><strong>Event</strong><br />
+			This callback is called at mouse up and when property <code>selectionMode = true</code>. The event contains the properties <code>x</code> and <code>y</code> for start position, <code>width</code> and <code>height</code>, <code>mouseX</code> and <code>mouseY</code> for the mouse position as well as <code>timeStamp</code> and <code>originalEvent</code>. A <code>selectionCencelled </code>property is available to know if the event was cancelled by setting <code>cancelSelection = true</code> during the <code>onselect</code> callback.. The instance's property <code>selectedRect</code> also holds the last selection as an array <code>[x, y, width, height]</code> or <code>null</code> if selection was cancelled.</td>
+	</tr>
+	<tr>
+		<td>onselectstart(event)<br />
+			<em>Ver.1.2</em></td>
+		<td><strong>Event</strong><br />
+			This callback is called at mouse down on the canvas and when property <code>selectionMode = true</code>. The <em>event</em> contains <code>x</code> and <code>y</code> position of the start point as well as <code>mouseX</code> and <code>mouseY</code> for mouse position (which will be the same as <code>x</code> and <code>y</code> in this case) and <code>timeStamp</code> and <code>originalEvent</code>,.</td>
+	</tr>
+	<tr>
+		<td>onzoom(event)<br />
+			<em>Ver. 1.2</em></td>
+		<td><strong>Event.</strong><br />
+			Triggered after a zoom has been performed. The <em>event </em>object contains the properties <code>oldZoomX </code>and <code>oldZoomY</code> for the zoom values before zoom was performed as well as <code>newZoomX</code> and <code>newZoomY</code> for the now current zoom values, and <code>timeStamp</code>. The callback is not triggered if <code>zoom()</code> was called with new values equal to the old values.</td>
+	</tr>
+</table>
+<a id="extevents"></a>
+<h2>The extended event objects</h2>
+<p>The event objects are extended with various useful properties depending on which properties are set on the <span>easyCanvas</span> instance:</p>
+<table width="100%" border="0" cellspacing="0" cellpadding="7" class="docTbl">
+	<caption>
+	Extended events
+	(extension applies to versions prior 1.2. See event list above for  new events)
+	</caption>
+	<tr>
+		<td width="19%" class="lt">onmousedown</td>
+		<td width="81%"><strong>None</strong></td>
+	</tr>
+	<tr>
+		<td>onmousemove</td>
+		<td><strong>Extensions:</strong><br />
+			<table width="100%" border="0" cellspacing="0" cellpadding="5">
+				<tr>
+					<td>angle</td>
+					<td>Absolute angle between current and previous point in degrees. Only available if <code>calcAngle = true</code></td>
+				</tr>
+				<tr>
+					<td width="20%">distance</td>
+					<td width="80%">distance (float) in pixels between current and previous point. Only available if <code>calcDistance = true</code></td>
+				</tr>
+				<tr>
+					<td class="lt">isMouseDown</td>
+					<td>If mouse button is held down or not. Only useful when<code> trackMove = true</code>.</td>
+				</tr>
+				<tr>
+					<td>maxVelocity</td>
+					<td>Maximum velocity since mouse button was held down to current point. Only available if <code>calcVelocity = true</code>.</td>
+				</tr>
+				<tr>
+					<td>relativeAngle</td>
+					<td>Relative angle between current and previous point in degrees. Only available if <code>calcAngle = true</code>.</td>
+				</tr>
+				<tr>
+					<td>totalDistance</td>
+					<td>total distance (float) in pixels from mouse button was held to current point. Only available if <code>calcDistance = true</code>.</td>
+				</tr>
+				<tr>
+					<td>velocity</td>
+					<td>Velocity between current and previous point. Only available if <code>calcVelocity = true</code>.</td>
+				</tr>
+			</table></td>
+	</tr>
+	<tr>
+		<td>onmouseup</td>
+		<td><strong>Extensions:</strong><br />
+			<table width="100%" border="0" cellspacing="0" cellpadding="5">
+				<tr>
+					<td class="lt">count</td>
+					<td>The total number of points registered since mouse down. Same as instance property <code>count</code>.</td>
+				</tr>
+				<tr>
+					<td>firstAngle (totalAngle)</td>
+					<td>Angle between first point (firstX / firstY) and the last point. Only available if <code>calcAngle = true</code>. From version 1.2 this property has changed name from <code>totalAngle</code> to <code>firstAngle</code>.</td>
+				</tr>
+				<tr>
+					<td>lastAngle</td>
+					<td>Last angle if mouse has been moved between mousedown and mouseup, and <code>calAngle = true</code></td>
+				</tr>
+				<tr>
+					<td>maxVelocity</td>
+					<td>Maximum velocity since mouse button was held down to current point. Only available if <code>calcVelocity = true</code> and mouse have been moved between <code>mousedown</code> and <code>mouseup</code>..</td>
+				</tr>
+				<tr>
+					<td width="20%">totalDistance</td>
+					<td width="80%">total distance (float) in pixels from mouse button was held to current point. Only available if <code>calcDistance = true</code></td>
+				</tr>
+			</table></td>
+	</tr>
+</table>
+<a id="offscreenobject"></a>
+<h2>Off-screen object</h2>
+<table width="100%" border="0" cellspacing="0" cellpadding="7" class="docTbl">
+	<caption>
+	Off-screen object
+	(returned by getOffscreenCanvas)
+	</caption>
+	<tr>
+		<td width="19%" class="lt">canvas</td>
+		<td width="81%"><strong>Canvas element  (read only)<br />
+			</strong>The off-screen canvas element</td>
+	</tr>
+	<tr>
+		<td class="lt">centerX</td>
+		<td><strong>Float (read only)</strong><br />
+			Center point for X of this canvas</td>
+	</tr>
+	<tr>
+		<td class="lt">centerY</td>
+		<td><strong>Float (read only)</strong><br />
+			Center point for Y of this canvas</td>
+	</tr>
+	<tr>
+		<td class="lt">context / ctx</td>
+		<td><strong>2D context  (read only)<br />
+		</strong>2D context from the canvas element used in this object.</td>
+	</tr>
+	<tr>
+		<td class="lt">height</td>
+		<td><strong>Integer (read only)</strong><br />
+			Height of canvas.</td>
+	</tr>
+	<tr>
+		<td class="lt">width</td>
+		<td><strong>Integer (read only)</strong><br />
+			Width of canvas</td>
+	</tr>
+</table>
+
+<a id="regionobject"></a>
+<h2>regionObject</h2>
+<table width="100%" border="0" cellspacing="0" cellpadding="7" class="docTbl">
+	<caption>
+	Region object
+	(returned by getRegion, getRegions, testRegion, <em>event</em>)
+	</caption>
+	<tr>
+		<td width="19%">id</td>
+		<td width="81%"><strong>String or Number (read only)<br />
+			</strong>The ID of this hit region object.</td>
+	</tr>
+	<tr>
+		<td>x</td>
+		<td><strong>Float (read only)</strong><br />
+			Horizontal position of this hit test object</td>
+	</tr>
+	<tr>
+		<td>y</td>
+		<td><strong>Float (read only)</strong><br />
+			Vertical position of this hit test object</td>
+	</tr>
+	<tr>
+		<td>width</td>
+		<td><strong>Float (read only)<br />
+		</strong>Width of this hit test object</td>
+	</tr>
+	<tr>
+		<td>height</td>
+		<td><strong>Float (read only)</strong><br />
+			Height of this hit test object</td>
+	</tr>
+	<tr>
+		<td>right</td>
+		<td><strong>Float (read only)</strong><br />
+			Right position for this hit test object</td>
+	</tr>
+	<tr>
+		<td>bottom</td>
+		<td><strong>Float (read only)</strong><br />
+Bottom position for this hit test object</td>
+	</tr>
+	<tr>
+		<td>priority</td>
+		<td><strong>Integer (read only)</strong><br />
+			Priority of this hit region object</td>
+	</tr>
+	<tr>
+		<td>timeStamp</td>
+		<td>Integer (read only)<br />
+			Timestamp when this hit region object was created (or in case where an update was gievn manual arguments).</td>
+	</tr>
+</table>
+
+<p>
+	<a href="#top">Go to top of document</a>
+</p>
+			
+</div>
+</div>
+<div id="footer">
+<div id="info"></div>
+<div id="abdias"></div>
+</div>
+</div>
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script> 
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

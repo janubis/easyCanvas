@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>easyCanvas - basic paint demo</title>
+	<style>canvas {cursor:crosshair}</style>
+	<script type="text/javascript" src="../easyCanvasLT.1.1.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+
+	var ez = new easyCanvasLT();
+
+	ez.onmousemove = function(x, y) {
+		ez.ctx.beginPath();
+		ez.ctx.moveTo(ez.prevX, ez.prevY);
+		ez.ctx.lineTo(x, y);
+		ez.ctx.stroke();
+	}
+
+</script>
+
+</body>
+</html>

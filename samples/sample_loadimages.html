@@ -1,0 +1,153 @@
+<!DOCTYPE HTML>
+<html><!-- InstanceBegin template="/Templates/template_demo.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!-- InstanceBeginEditable name="doctitle" -->
+	<title>easyCanvas for Javascript - demo and sample code</title>
+	<!-- InstanceEndEditable -->
+	<link rel="stylesheet" type="text/css" href="../css/demos.css">
+	<script type="text/javascript" src="../easyCanvas.1.3.js"></script>
+	<script type="text/javascript" src="../js/code.js"></script>
+	<!-- InstanceBeginEditable name="head" -->
+	<!-- InstanceEndEditable -->
+</head>
+
+<body>
+
+	<header>
+		<a href="http://easycanvasjs.com/"><img src="../gfx/logo1.png" width="100" height="45" alt="easyCanvasJS"></a>
+	</header>
+
+	<div id="content">
+		<section id="main"><!-- InstanceBeginEditable name="Main" -->
+		<h1>Load multiple images asynchronous with callback</h1>
+
+		<div class="instr">This demo shows how the <code>loadImages</code> method can be used to load an array with image links onto canvas with a single line.</div>
+
+		<canvas id="demo" class="canvasFull" width="800" height="380">Sorry, your browser does not support the canvas element.
+			Please consider upgrading to a modern HTML5 compliant browser such as Chrome or Firefox.</canvas>
+		<!-- InstanceEndEditable -->
+			<div id="info">-</div>
+
+			<h2>The code in essence:</h2>
+
+<!-- InstanceBeginEditable name="CodeEssence" --><pre data-code="js">/// setup easyCanvas
+var ez = new easyCanvas('demo'),
+	urls = [ ... URLs to images here ... ];
+
+/// load multiple images
+ez.loadImages(urls, done [, progress]);
+
+/// progress bar
+function progress(e) {
+	... progress bar or something similar
+}
+
+/// draw all images that was loaded
+function done(e) {
+	... e.images contains array with all images as Image objects ...
+}
+</pre>
+<!-- InstanceEndEditable -->
+
+			<h2>Full code:</h2>
+
+			<pre data-code="js" id="codePre">Automatically inserted</pre>
+
+		</section>
+
+		<section id="rightside">
+
+			<h2>Parameters</h2>
+			<!-- InstanceBeginEditable name="Parameters" -->
+			<div class="para">
+				<div>None for this demo.</div>
+			</div>
+			<!-- InstanceEndEditable --></section>
+	</div>
+	<footer>
+		All examples are provided under the same license as easyCanvas, GPL-3.0.
+		<div id="abdias"></div>
+	</footer>
+<!-- InstanceBeginEditable name="Code" -->
+<script id="codeJS" type="text/javascript">
+/// setup easyCanvas
+var ez = new easyCanvas('demo'),
+
+    /// define image URLs - add nocache to force reloading for demo
+	nocache = '?' + (new Date()).getTime(),
+	urls = ['http://i.imgur.com/qM02E1h.jpg' + nocache,
+			'http://i.imgur.com/dCBDSiS.jpg' + nocache,
+			'http://i.imgur.com/7dMbfRk.jpg' + nocache,
+			'http://i.imgur.com/0tnbGIi.jpg' + nocache,
+			'http://i.imgur.com/PcA8O9t.jpg' + nocache,
+			'http://i.imgur.com/iVmAVlr.jpg' + nocache,
+			'http://i.imgur.com/vj4Ptbw.jpg' + nocache,
+			'http://i.imgur.com/N9e5h4h.jpg' + nocache,
+			'http://i.imgur.com/Aq8sFRR.jpg' + nocache,
+			'http://i.imgur.com/wM7Mj5l.jpg' + nocache,
+			'http://i.imgur.com/tq15Cwb.jpg' + nocache,
+			'http://i.imgur.com/A6YQ4Ua.jpg' + nocache
+	];
+
+/// here we load all the images defined above
+info.innerHTML = 'Starting...';
+ez.loadImages(urls, done, progress);
+
+/// progress bar
+function progress(e) {
+
+	/// calc per-centage using details from event
+	var w = (ez.width - 50) * e.current / e.total,
+		url = (e.current === 0) ? 'Starting...' : urls[e.current - 1];
+
+	/// bar
+	ez.ctx.fillStyle = '#0f7';
+	ez.ctx.fillRect(25, 100, w, 7);
+
+	/// text for progress and url
+	ez.ctx.clearRect(0, 110, ez.width, 50);
+	ez.ctx.fillStyle = '#fff';
+	ez.ctx.textAlign = 'center';
+	ez.ctx.font = '18px sans-serif';
+	ez.ctx.fillText(e.current + ' / ' + e.total + ' (' + url + ')', ez.width * 0.5, 136);
+
+	/// thumbnail of image
+	if (e.image !== null)
+		ez.ctx.drawImage(e.image, (ez.width - 100) * 0.5, 170, 100, 67);
+}
+
+/// draw all images that was loaded
+function done(e) {
+
+	var i, t, x = 0, y = 0,
+		w = ez.width * 0.25,
+		h = ez.height * 0.333,
+		count = 0;
+
+ 	/// clear canvas/progress bar in case not all images could be loaded
+	ez.clear();
+
+	/// fill canvas with a grid of the images
+	for(i = 0; i < e.images.length; i++) {
+
+		/// if image was successfully loaded image will not be null
+		if (e.images[i] !== null) {
+			ez.ctx.drawImage(e.images[i], x, y);
+
+			count++;
+
+            /// move to next spot for next image
+			if (((i + 1) % 4) === 0) {
+				x = 0;
+				y += h;
+			} else x += w;
+		}
+	}
+
+	info.innerHTML = count + ' images loaded successfully!';
+}
+</script><!-- InstanceEndEditable -->
+<script type="text/javascript">codeFormatter()</script>
+</body>
+<!-- InstanceEnd --></html>

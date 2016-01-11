@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html><!-- InstanceBegin template="/Templates/template_demo.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!-- InstanceBeginEditable name="doctitle" -->
+	<title>easyCanvas for Javascript - selection with or without custom draw</title>
+	<!-- InstanceEndEditable -->
+	<link rel="stylesheet" type="text/css" href="../css/demos.css">
+	<script type="text/javascript" src="../easyCanvas.1.3.js"></script>
+	<script type="text/javascript" src="../js/code.js"></script>
+	<!-- InstanceBeginEditable name="head" -->
+	<!-- InstanceEndEditable -->
+</head>
+
+<body>
+
+	<header>
+		<a href="http://easycanvasjs.com/"><img src="../gfx/logo1.png" width="100" height="45" alt="easyCanvasJS"></a>
+		<div class="moreSamples">For more demos and samples visit <a href="http://easycanvasjs.com/samples.html">easyCanvasJS / samples</a></div>
+	</header>
+	
+	<div id="content">
+		<section id="main"><!-- InstanceBeginEditable name="Main" -->
+		<h1>Selection mode with or without custom draw</h1>
+		
+		<div class="instr">Click and drag mouse on canvas to make a selection. The demo also features simple hotkey usage:
+		hit ESC to cancel a selection while mouse is down.</div>
+		
+		<canvas id="demo" class="canvasFull" width="800" height="400">Sorry, your browser does not support the canvas element.
+			Please consider upgrading to a modern HTML5 compliant browser such as Chrome or Firefox.</canvas>
+		<!-- InstanceEndEditable -->
+			<div id="info">-</div>
+			
+			<h2>The code in essence:</h2>
+			
+<!-- InstanceBeginEditable name="CodeEssence" --><pre data-code="js">var ez = new easyCanvas('demo');
+
+ez.selectionMode = true;	/// enable selection mode
+
+ez.onselectend = function(e) {
+	/// here we handle selected region
+}
+
+ez.onselect = function(e) {
+	/// to apply custom shape or to follow current selection tap into this callback
+}
+</pre>
+<!-- InstanceEndEditable -->
+
+			<h2>Full code:</h2>
+			
+			<pre data-code="js" id="codePre">Automatically inserted</pre>
+			
+		</section>
+		
+		<section id="rightside">
+		
+			<h2>Parameters</h2>
+			<!-- InstanceBeginEditable name="Parameters" -->
+			<div class="para">
+				<div>Use custom drawn region:</div>
+				<input type="checkbox" id="custom">
+				<label for="custom">Enable custom draw</label>
+			</div>
+			<div class="para">
+				<div>On select end:</div>
+				<input type="checkbox" id="mark">
+				<label for="mark">Leave rectangle for selection</label>
+			</div>
+			<!-- InstanceEndEditable --></section>
+	</div>		
+	<footer>
+		All examples are provided under the same license as easyCanvas, GPL-3.0.
+		<div id="abdias"></div>
+	</footer>
+<!-- InstanceBeginEditable name="Code" --><script id="codeJS" type="text/javascript">
+/// set up easyCanvas and cache context
+var ez = new easyCanvas('demo'),
+	ctx = ez.context;
+
+/// load an image for background
+ez.loadImage('../gfx/butterfly.jpg', function(e) {
+
+	/// draw image
+	ez.drawImageProp(e.image);
+
+	/// then start selection mode
+	ez.selectionMode = true;
+
+	/// add ESC as hotkey to cancel selection
+	ez.addHotkey('esc');
+	
+	/// update info
+	info.innerHTML = 'Selection mode is ready! Make a selection on the canvas...';
+})
+
+/// here we handle selected region
+ez.onselectend = function(e) {
+
+	/// got cancelled?
+	if (e.selectionCancelled === false) {
+
+		/// demo option: draw final selected rectangle?
+		if (mark.checked === true) {
+			ctx.strokeStyle = '#0ff';
+			ctx.strokeRect(e.x, e.y, e.width, e.height);
+		}
+		
+		/// update info
+		info.innerHTML = 'Selected region: X: ' + e.x + ', Y: ' + e.y +
+						 ', WIDTH: ' + e.width + ', HEIGHT: ' + e.height;
+	
+	} else {
+	
+		/// update info when cancelled
+		info.innerHTML = 'Selection cancelled...';
+	}
+}
+
+ez.onselect = function(e) {
+
+	/// demo option is custom draw?
+	if (custom.checked === true) {
+
+		/// indicate that we draw the selection our selves
+		e.selfDraw = true;
+	
+		/// mid point for center crosshair
+		var cx = e.x + e.width * 0.5,
+			cy = e.y + e.height * 0.5;
+	
+		/// outer rectangle (the actual size)
+		ctx.beginPath();
+		ctx.strokeStyle = '#fff';
+		ctx.strokeRect(e.x + 0.5, e.y + 0.5, e.width, e.height);
+	
+		/// draw inner rect and cross-hair only if width and height > 10 pixels
+		if (e.width > 10 && e.height > 10) {
+			ctx.strokeStyle = '#ff0';
+			ctx.strokeRect(e.x + 5.5, e.y + 5.5, e.width - 10, e.height - 10);
+			ez
+				.line(cx - 5, cy, cx + 6, cy, 1, '#0ff')
+				.line(cx, cy - 5, cx, cy + 6, 1, '#0ff');
+		}
+	}
+
+	/// update info
+	info.innerHTML = 'Current selection: X: ' + e.x + ', Y: ' + e.y +
+					 ', WIDTH: ' + e.width + ', HEIGHT: ' + e.height +
+					 ', Mouse X: ' + e.mouseX + ', Mouse Y: ' + e.mouseY;
+}
+
+/// handle hotkeys - since we only use one in this demo no check is performed
+ez.onhotkey = function(e) {
+
+	/// this cancels current active selection
+	ez.cancelSelection();
+}
+</script>
+<!-- InstanceEndEditable -->
+<script type="text/javascript">codeFormatter()</script>
+</body>
+<!-- InstanceEnd --></html>

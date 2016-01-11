@@ -1,0 +1,125 @@
+<!DOCTYPE HTML>
+<html><!-- InstanceBegin template="/Templates/template_demo.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!-- InstanceBeginEditable name="doctitle" -->
+	<title>easyCanvas for Javascript - demo and sample code</title>
+	<!-- InstanceEndEditable -->
+	<link rel="stylesheet" type="text/css" href="../css/demos.css">
+	<script type="text/javascript" src="../easyCanvas.1.3.js"></script>
+	<script type="text/javascript" src="../js/code.js"></script>
+	<!-- InstanceBeginEditable name="head" -->
+	<!-- InstanceEndEditable -->
+</head>
+
+<body>
+
+	<header>
+		<a href="http://easycanvasjs.com/"><img src="../gfx/logo1.png" width="100" height="45" alt="easyCanvasJS"></a>
+		<div class="moreSamples">For more demos and samples visit <a href="http://easycanvasjs.com/samples.html">easyCanvasJS / samples</a></div>
+	</header>
+
+	<div id="content">
+		<section id="main"><!-- InstanceBeginEditable name="Main" -->
+		<h1>Demo of file-drop mode</h1>
+
+		<div class="instr">Find some images in a folder on your harddisk. Select some and drag and drop them onto the canvas below:</div>
+
+		<canvas id="demo" class="canvasFull" width="800" height="400">Sorry, your browser does not support the canvas element.
+			Please consider upgrading to a modern HTML5 compliant browser such as Chrome or Firefox.</canvas>
+		<!-- InstanceEndEditable -->
+			<div id="info">-</div>
+
+			<h2>The code in essence:</h2>
+
+<!-- InstanceBeginEditable name="CodeEssence" --><pre data-code="js">
+ez.drop(modeIsActive [, maxSize] [, maxItems] [, fileExtensionArray] );
+
+ez.ondropstart = function(e) {
+	/// ... prepare loading
+}
+
+ez.ondrop = function(e) {
+	/// ... done loading, get images and info from event
+}
+
+</pre><!-- InstanceEndEditable -->
+
+			<h2>Full code:</h2>
+
+			<pre data-code="js" id="codePre">Automatically inserted</pre>
+
+		</section>
+
+		<section id="rightside">
+
+			<h2>Parameters</h2>
+			<!-- InstanceBeginEditable name="Parameters" -->
+			<div class="para">
+				<div>None for this demo.</div>
+			</div>
+			<!-- InstanceEndEditable --></section>
+	</div>
+	<footer>
+		All examples are provided under the same license as easyCanvas, GPL-3.0.
+		<div id="abdias"></div>
+	</footer>
+<!-- InstanceBeginEditable name="Code" --><script id="codeJS" type="text/javascript">
+var ez = new easyCanvas('demo');
+
+/// activate drop mode - we can now receive dropped files. Here we have set limit to 12 files
+ez.drop(true, null, 12);
+
+/// setup some text
+ez.ctx.font = '64px sans-serif';
+ez.ctx.textBaseline = 'bottom';
+ez.ctx.textAlign = 'center';
+ez.ctx.fillStyle = '#fff';
+ez.ctx.fillText('DROP SOME FILES HERE', ez.width * 0.5, ez.height * 0.5 + 30);
+
+/// indicate that something goes on
+ez.ondropstart = function(e) {
+	ez.clear();
+	ez.ctx.font = '24px sans-serif';
+	ez.ctx.fillStyle = '#fff';
+	ez.ctx.textBaseline = 'top';
+	ez.ctx.fillText('Loading ' + e.total + ' dropped images...', ez.width * 0.5, 100);
+}
+
+/// draw all images that was dropped
+ez.ondrop = function(e) {
+
+    /// various counters and positions
+	var i, t, cnt = 0,
+		x = 0, y = 0, w = ez.width * 0.25, h = ez.height * 0.333;
+
+	/// clear message
+	ez.clear();
+
+    /// fill canvas with a grid of the images to demo loaded images
+	for(i = 0; i < e.images.length; i++) {
+
+		if (e.images[i] !== null) {
+
+			/// draw the images proportional and filled (see separate demo)
+			ez.drawImageProp(e.images[i], x, y, w, h);
+
+			/// fill grid
+			if (((cnt+1) % 4) === 0) {
+				x = 0; y += h;
+			} else x += w;
+
+			cnt++;
+		}
+	}
+
+	/// update info
+	info.innerHTML = e.total + ' files was dropped, ' +
+					 e.count + ' was loaded, ' +
+					 (e.total - e.count) + ' could not be loaded';
+}
+</script>
+<!-- InstanceEndEditable -->
+<script type="text/javascript">codeFormatter()</script>
+</body>
+<!-- InstanceEnd --></html>

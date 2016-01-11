@@ -1,0 +1,215 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>easyCanvas - Grid mode</title>
+	<script src="../js/range.min.js"></script>
+	<style>
+	body {
+		background:#333;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		margin:0;
+		}
+	canvas {
+		cursor:crosshair;
+		}
+	#header {
+		padding-top:7px;
+		background:#555;
+		border-bottom:1px solid #eee;
+		}
+	#header > div {
+		color:#fff;
+		font:24px sans-serif;
+		padding-top:20px;
+		float:right;
+		}
+	#header > div > a {
+		color:#ddd;
+		text-decoration:none;
+		}
+	.i, .v {
+		float:left;
+		display:block;
+		color:#fff;
+		font:12px sans-serif;
+		padding:0 0 1px 0;
+		width:300px;
+		}
+	.v {
+		padding:3px 0 0 0;
+		width:50px;
+		text-align:right;
+		}
+	.h {
+		float:left;
+		clear:both;
+		color:#fc0;
+		font:13px sans-serif;
+		padding:9px 0 3px 0;
+		width:330px;
+		}
+	input,span,.s {
+		float:left;
+		color:#99f;
+		font:12px sans-serif;
+		margin:4px 0 0 10px;
+		}
+	</style>
+</head>
+<body>
+<div id="header">
+	<img src="../gfx/logo1.png" width="172" height="75" alt="easyCanvas">
+</div>
+
+<div style="width:300px;padding:0 0 0 10px">
+	<div class="h">Grid size:</div>
+
+	<div class="i">Grid horizontal size:</div>
+	<div class="s"><input id="gridX" type="range" value="64" min="1" max="250" onchange="setGrid()"><div class="v" id="gridXV">25</div></div>
+
+	<div class="i">Grid vertical size:</div>
+	<div class="s"><input id="gridY" type="range" value="64" min="1" max="250" onchange="setGrid()"><div class="v" id="gridYV">25</div></div>
+
+	<div class="h">Grid offset:</div>
+
+	<div class="i">Grid X offset:</div>
+	<div class="s"><input id="offsetX" type="range" value="32" min="0" max="250" onchange="setGrid()"><div class="v" id="offsetXV">10</div></div>
+
+	<div class="i">Grid Y offset:</div>
+	<div class="s"><input id="offsetY" type="range" value="32" min="0" max="250" onchange="setGrid()"><div class="v" id="offsetYV">10</div></div>
+
+	<div class="h">Cell indexes from mouse position:</div>
+
+	<div class="s"><span>X:</span><div class="v" id="cellX">0</div></div>
+	<div class="s"><span>Y:</span><div class="v" id="cellY">0</div></div>
+
+	<div class="h">Positions from cell indexes:</div>
+
+	<div class="s"><span>X:</span><div class="v" id="posX">0</div></div>
+	<div class="s"><span>Y:</span><div class="v" id="posY">0</div></div>
+
+</div>
+
+<script type="text/javascript" src="../easyCanvas.1.3.js"></script>
+<script type="text/javascript">
+
+/// Set up canvas
+var	ez = new easyCanvas(),	/// canvas covering window
+	ctx = ez.ctx,			/// cache context
+	rect = null;			/// to clear background
+
+/// pad left size to give space for info
+ez.clearColor	= '#336';
+ez.padding(88, 0, 0, 250);
+ez.trackMove = true;			// track also when mouse button is up
+ez.startAutoClear();
+
+ez.onmousemove = function(e) {
+
+	var cells, pos,
+		x = e.x, y = e.y;
+
+	/// clear previous marker
+	if (rect !== null)
+		ez.clearBackground(rect[0], rect[1], rect[2], rect[3]);
+
+	/// draw marker in corner of grid
+	//if (e.relativeX >= grid[2] && e.relativeY >= grid[3])
+	ctx.fillRect(x - 3, y - 3, 6, 6);
+
+	/// get cell indexes (ver. 1.2)
+	cells = ez.getGridCell(x, y);
+	cellX.innerHTML = cells[0];
+	cellY.innerHTML = cells[1];
+
+	/// get cell position (ver. 1.2)
+	pos = ez.getGridPosition(cells[0], cells[1]);
+	posX.innerHTML = pos[0];
+	posY.innerHTML = pos[1];
+
+	rect = [x - 3, y - 3, 6, 6];
+}
+
+ez.onredraw = function() {		// set fill and stroke at each redraw (ie. window resize)
+	ctx.fillStyle = 'rgba(255,255,255,0.75)';
+	setGrid();
+	ez.updateAutoClear();
+}
+
+/**
+ * Grid code
+*/
+function showGrid() {
+
+	ez.clear();
+
+	var grid = ez.grid(),
+		os = ez.getOffScreenCanvas(grid[0], grid[1]),
+		ox = os.ctx,
+		dx = grid[0] * 0.5,
+		dy = grid[1] * 0.5;
+
+	if (grid[0] < 2 || grid[1] < 2) return;
+
+	/// draw grid cross
+	ox.beginPath();
+	ox.strokeStyle = 'rgb(255,120,220)';
+	ox.translate(0.5, 0.5);
+	ox.moveTo(0, 3);
+	ox.lineTo(6, 3);
+	ox.moveTo(3, 0);
+	ox.lineTo(3, 6);
+	ox.stroke();
+
+	/// draw middle cross
+	ox.beginPath();
+	ox.strokeStyle = 'rgba(255,120,220, 0.2)';
+	ox.moveTo(dx, dy + 3);
+	ox.lineTo(dx + 6, dy + 3);
+	ox.moveTo(dx + 3, dy);
+	ox.lineTo(dx + 3, dy + 6);
+	ox.stroke();
+
+	/// fill pattern
+	var ptr = ctx.createPattern(os.canvas, 'repeat');
+	ctx.translate(grid[2] - 3, grid[3] - 3);
+	ctx.fillStyle = ptr;
+	ctx.fillRect(0, 0, ez.width, ez.height);
+	ctx.translate(-(grid[2] - 3), -(grid[3] - 3));
+
+	ctx.fillStyle = '#fff';
+
+	ez.updateAutoClear();
+	rect = null;
+}
+
+/**
+ * UI
+*/
+function setGrid() {
+
+	var gx, gy, ox, oy;
+
+	gx = parseInt(document.getElementById('gridX').value, 10);
+	gy = parseInt(document.getElementById('gridY').value, 10);
+	ox = parseInt(document.getElementById('offsetX').value, 10);
+	oy = parseInt(document.getElementById('offsetY').value, 10);
+
+	gridXV.innerHTML = gx;
+	gridYV.innerHTML = gy;
+	offsetXV.innerHTML = ox;
+	offsetYV.innerHTML = oy;
+
+	ez.grid(gx, gy, ox, oy);
+	showGrid();
+
+}
+
+</script>
+</body>
+</html>

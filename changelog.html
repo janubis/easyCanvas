@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	<title>easyCanvas for HTML5 and JavaScript - Change log</title>
+
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+</head>
+
+<body>
+
+<div id="bg">
+	<div id="version">
+		<div class="versionTop">CURRENT VERSION</div>
+		<div class="versionBtm">1.3</div>
+	</div>
+<div id="bgmenu"></div></div>
+<div id="content">
+	
+	<div id="header">
+		<img src="gfx/logo1.png" width="345" height="150" alt="uniStoreJS" />
+	</div>
+
+	<div id="menu">
+		<ul>
+			<li><a href="index.html">About</a></li>
+			<li><a href="samples.html">Samples and demos</a></li>
+			<li><a href="changelog.html" class="selectedMenu">News</a></li>
+			<li><a href="download.html">Download</a></li>
+			<li><a href="docs.html">Documentation</a></li>
+		</ul>
+	</div>
+
+	<div id="main">
+		<div id="leftside" style="width:100%;padding-right:0;">
+
+<h2>Change log</h2>
+
+<p><strong>Version 1.3</strong></p>
+
+<ul>
+	<li>NEW: Added support for CORS mode for image loading (property <code>useCrossOrigin</code> and <code>crossOriginMode</code>)</li>
+	<li>NEW: Faster <code>clear()</code> in Chrome. Detects which method to use for clearing the canvas more efficiently.</li>
+	<li>FIX: Anti-alias was reset after a reset.</li>
+</ul>
+
+<p><strong>Version 1.2</strong></p>
+
+<ul>
+	<li>NEW: Auto-Clear handles background updates when drawing (automatic and manual modes)</li>
+	<li>NEW: Drop mode for canvas - drop images into canvas. Event driven (<code>ondrop</code>, <code>ondropstart</code>, <code>ondropprogress</code>).</li>
+	<li>NEW: Fullscreen mode (in browsers which supports this) by a single method <code>fullscreenMode</code> (event <code>onfullscreen</code>).</li>
+	<li>NEW: Selection mode with support for custom selection shape. Event driven (<code>onselectstart</code>, <code>onselect</code>, <code>onselectend</code>)</li>
+	<li>NEW: Basic built-in hit region support with callbacks ( <code>onregiondown</code>, <code>onregionover</code>, <code>onregion</code>)</li>
+	<li>NEW: Fast pixel setting and getting with bitmap locking for multi-updates</li>
+	<li>NEW: Get grid cell indexes from position when using grid</li>
+	<li>NEW: Function to calculate grid cell indexes into position  when using grid</li>
+	<li>NEW: Easily load multiple images from array with correct load handling and callback</li>
+	<li>NEW: Add hotkeys to easyCanvas with <code>addHotkey(key, isAlt, isShift, isCtrl)</code>.</li>
+	<li>NEW: Custom header for recorded points</li>
+	<li>NEW: One-liner to render internally recorded points for tool 0 (lines)</li>
+	<li>NEW: Get bounding rectangle (<code>getRect</code>) between two sets of absolute positions corrected for negative values</li>
+	<li>NEW: New event <code>onmousewheel</code> for mouse wheel handling with unifier for cross-browser support.</li>
+	<li>NEW: Before and after events for the <code>pan</code>, <code>zoom</code> and <code>rotation</code> methods.</li>
+	<li>NEW: Added support to programmatically set pan (in addition to automatic handling)</li>
+	<li>NEW: Mouse event (move, up) extension <code>firstDistance</code>, distance between first and current point</li>
+	<li>NEW: Mouse event (move, up) extension <code>firstAngle</code>, angle between first point and current point</li>
+	<li>NEW: <code>setDash</code> to set dash pattern for lines cross-browser (supports only browser's native capability).</li>
+	<li>NEW: <code>textSelect</code> to turn off that annoying text selection that takes places sometimes in the browser while f.ex drawing.</li>
+	<li><strong>! CHANGE</strong>: <strong>event signature </strong>for <code>onmousedown</code>, <code>onmousemove</code>, <code>onmouseup</code>, <code>onmousewheel</code>, <code>x</code> and <code>y</code> moved to  event (LT not changed)</li>
+	<li><strong>! CHANGE</strong>: changed callback signatures for <code>loadImage</code>. See documentation for details..</li>
+	<li>CHANGE: renamed <code>strokeLine</code> -> <code>line</code> (old still available through this version)</li>
+	<li>CHANGE: renamed <code>getOffscreenCanvas</code> -> <code>getOffScreenCanvas</code> (old still available through this version)</li>
+	<li>CHANGE: renamed event <code>onmouseup</code>'s: <code>totalAngle</code> -> <code>firstAngle</code> (old still available through this version)</li>
+	<li>FIX: <code>drawImageProp</code> now also properly clips the image to destination size.</li>
+	<li>FIX: <code>cssClass</code> method now works.</li>
+	<li>FIX: <code>padding</code> method now works.</li>
+</ul>
+
+<p><strong>Version 1.1.1 Full </strong>(non-official release)<strong> and version 1.1 LT</strong></p>
+
+<ul>
+	<li>HOTFIX: Fix for relative mouse positions in Firefox when using padding on the Canvas</li>
+	<li>HOTFIX: Fix for padding which accidentally used <code>parameters</code> keyword instead of <code>arguments</code>. (full only)</li>
+</ul>
+
+<p><strong>Version 1.1</strong></p>
+
+<ul>
+	<li>NEW: Grid support with offset support and quantizing of mouse positions</li>
+	<li>NEW: Draw image proportionally to destination region</li>
+	<li>NEW: Correctly load an image with callback</li>
+	<li>NEW: Internal point / tool recorder with stroke arrays.</li>
+	<li>NEW: More complex velocity function that uses moving averages</li>
+	<li>NEW: Set and get pixels</li>
+	<li>NEW: <code>strokeLine</code> method (now <code>line</code> from version 1.2)</li>
+	<li>REMOVED: debug mode</li>
+</ul>
+
+</div>
+</div>
+
+<div id="footer">
+	<div id="info"></div>
+	<div id="abdias"></div>
+</div>
+	
+</div>
+
+<script type="text/javascript" src="js/jquery-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>
