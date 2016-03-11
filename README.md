@@ -21,6 +21,8 @@ easyCanvas for things that are tedious to set up - when you want.
 
 easyCanvas is now legacy.
 
+You can find some [old demos (now a bit outdated) here](http://epistemex.github.io/easyCanvas/).
+
 easyCanvas was developed original for a specific internal need and is 
 provided as-is to the public. The library will not be developed further 
 (it has already implemented most what we needed and runs stable) but we 
