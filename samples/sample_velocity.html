@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<title>easyCanvas velocity demo</title>
+	<style>
+	body {
+		background:#999;
+		-webkit-user-select: none;
+		-khtml-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		user-select: none;
+		margin:0;
+		overflow:hidden;
+		cursor:move;
+		}
+	#header {
+		padding-top:7px;
+		background:#555;
+		border-bottom:1px solid #eee;
+		}
+	#header > div {
+		color:#fff;
+		font:24px sans-serif;
+		padding-top:20px;
+		float:right;
+		}
+	#header > div > a {
+		color:#ddd;
+		text-decoration:none;
+		}
+	</style>
+</head>
+<body>
+<div id="header">
+	<img src="../gfx/logo1.png" width="172" height="75" alt="easyCanvas">
+</div>
+
+<script type="text/javascript" src="../easyCanvas.1.3.js"></script>
+<script type="text/javascript">
+
+	var ez = new easyCanvas(),	// easyCanvas covering the whole window
+		ctx = ez.ctx,			// cache context
+
+		dx, dy,					// deltas for x and y direction set at mouseup
+		offsetX, offsetY,		// grab offset
+
+		dia = 100,				// diameter of puck
+
+		strength = 20,			// velocity strength
+
+		isAnim = false,			// to loop or not
+		isInPuck = false,		// we are grabbing the uh object
+
+		// rectangle boundary for the ball [x, y, width, height]
+		r = [(ez.width - dia) * 0.5, (ez.height - dia) * 0.5, dia, dia]
+		;
+
+	/// set up easyCanvas
+	ez.padding(90, 0, 0, 0);	// pad to give header room
+	ez.calcDistance	= true;		// calculate distance between points
+	ez.calcAngle	= true;		// calculate angle between points
+	ez.calcVelocity	= true;		// calculate velocity between points
+
+	/// render and cache a puck to an off-screen canvas
+	var oz = ez.getOffscreenCanvas(dia, dia);
+
+	/// the gradient
+	var grd = oz.ctx.createRadialGradient(oz.centerX, oz.centerY, 0, oz.centerX, oz.centerY, dia * 0.5);
+	grd.addColorStop(0, '#eee');
+	grd.addColorStop(0.75, '#aaa');
+	grd.addColorStop(0.95, '#888');
+	grd.addColorStop(1, '#555');
+
+	/// draw puck and we are ready to move
+	oz.ctx.arc(oz.centerX, oz.centerY, 50, 0, 2 * 180 / Math.PI);
+	oz.ctx.fillStyle = grd;
+	oz.ctx.fill();
+
+/// This is called on initialization and on window resize
+ez.onredraw = function() {
+	ctx.drawImage(oz.canvas, r[0], r[1]);
+}
+
+ez.onmousedown = function(e) {
+
+	var x = e.x, y = e.y;
+
+	/// are we inside the puck area?
+	isInPuck = (x >= r[0] && x <= (r[0] + r[2]) && y >= r[1] && y <= (r[1] + r[3]));
+
+	if (isInPuck === true) {
+		isAnim = false;		// stop animation if running
+		offsetX = x - r[0];	// store offset to grab point
+		offsetY = y - r[1];
+	}
+}
+
+ez.onmousemove = function(e) {
+
+	if (isInPuck === true) {
+
+		var x = e.x, y = e.y;
+
+		/// clear previous ball
+		ctx.clearRect(r[0] - 2, r[1] - 2, r[2] + 4, r[3] + 4);
+
+		/// move ball to new position
+		r[0] = x - offsetX;
+		r[1] = y - offsetY;
+
+		/// draw ball
+		ctx.drawImage(oz.canvas, r[0], r[1]);
+
+	}
+}
+
+ez.onmouseup = function(e) {
+
+	/// if we have a puck and it is moved
+	if (isInPuck === true && e.count > 0) {
+
+		var x = e.x, y = e.y;
+
+		isInPuck = false;
+
+		/// divide accumulated velocity on number of points
+
+		var av = ez.getVelocity();
+
+		/// calculate direction based on angle. Strength = delta length
+		dx = strength * av * Math.cos(e.lastAngle * ez.deg2rad);
+		dy = strength * av * Math.sin(e.lastAngle * ez.deg2rad);
+
+		/// start animation
+		isAnim = true
+		animate();
+	}
+}
+
+function resetVelocity() {
+	av = 0;
+}
+
+function animate() {
+
+		/// clear previous ball
+		ctx.clearRect(r[0] - 2, r[1] - 2, r[2] + 4, r[3] + 4);
+
+		/// update position
+		r[0] += dx;
+		r[1] += dy;
+
+		/// check if we are bouncing against walls
+		if (r[0] < 0) {
+			dx = -dx;
+			r[0] = 0;
+		}
+		if ((r[0] + r[2]) > ez.width) {
+			dx = -dx;
+			r[0] = ez.width - r[2];
+		}
+
+		if (r[1] < 0) {
+			dy = -dy;
+			r[1] = 0;
+		}
+		if ((r[1] + r[3]) > ez.height) {
+			dy = -dy;
+			r[1] = ez.height- r[3];
+		}
+
+		/// draw ball in new position
+		ctx.drawImage(oz.canvas, r[0], r[1]);
+
+		/// friction - reduce speed by 1.5%
+		dx *= 0.985;
+		dy *= 0.985;
+
+		/// if too small speed stop animation
+		if (dx > -0.1 && dx < 0.1 && dy > -0.1 && dy < 0.1) isAnim = false;
+
+		/// loop if in animation mode
+		if (isAnim === true)
+			requestAnimationFrame(animate);
+}
+
+dx = strength * Math.random() - 5;
+dy = strength * Math.random() - 5;
+isAnim = true;
+
+animate();
+
+</script>
+</body>
+</html>

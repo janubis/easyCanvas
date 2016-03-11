@@ -1,0 +1,107 @@
+<!DOCTYPE HTML>
+<html><!-- InstanceBegin template="/Templates/template_demo.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!-- InstanceBeginEditable name="doctitle" -->
+	<title>easyCanvas for Javascript - demo and sample code</title>
+	<script src="../js/range.min.js"></script>
+	<!-- InstanceEndEditable -->
+	<link rel="stylesheet" type="text/css" href="../css/demos.css">
+	<script type="text/javascript" src="../easyCanvas.1.3.js"></script>
+	<script type="text/javascript" src="../js/code.js"></script>
+	<!-- InstanceBeginEditable name="head" -->
+	<!-- InstanceEndEditable -->
+</head>
+
+<body>
+
+	<header>
+		<a href="http://easycanvasjs.com/"><img src="../gfx/logo1.png" width="100" height="45" alt="easyCanvasJS"></a>
+		<div class="moreSamples">For more demos and samples visit <a href="http://easycanvasjs.com/samples.html">easyCanvasJS / samples</a></div>
+	</header>
+	
+	<div id="content">
+		<section id="main"><!-- InstanceBeginEditable name="Main" -->
+		<h1>Demo of bitmap lock for pixel manipulation</h1>
+		
+		<div class="instr">easyCanvas has getPixel() and setPixel() functions. Combining these with bitmap locking
+		will increase performance of them significantly as shown in this demo. WARNING: turning off the bitmap lock
+		will make the processing take quite a while so be patience for result.</div>
+		
+		<canvas id="demo" class="canvasFull" width="800" height="400">Sorry, your browser does not support the canvas element.
+			Please consider upgrading to a modern HTML5 compliant browser such as Chrome or Firefox.</canvas>
+		<!-- InstanceEndEditable -->
+			<div id="info">-</div>
+			
+			<h2>The code in essence:</h2>
+			
+<!-- InstanceBeginEditable name="CodeEssence" --><pre data-code="js">
+ez.lock(boolean);
+</pre><!-- InstanceEndEditable -->
+
+			<h2>Full code:</h2>
+			
+			<pre data-code="js" id="codePre">Automatically inserted</pre>
+			
+		</section>
+		
+		<section id="rightside">
+		
+			<h2>Parameters</h2>
+			<!-- InstanceBeginEditable name="Parameters" -->
+			<div class="para">
+				<div>Color amount:</div>
+				<input type="range" min="1" max="100" value="100" id="slider1" onchange="slider1val.innerHTML = this.value;grayscale(this);">
+				<span id="slider1val">100</span>
+			</div>
+			<div class="para">
+				<div>Bitmap locking:</div>
+				<input type="checkbox" id="lock" checked>
+				<label for="checkbox1">Lock bitmap</label>
+			</div>
+			<!-- InstanceEndEditable --></section>
+	</div>		
+	<footer>
+		All examples are provided under the same license as easyCanvas, GPL-3.0.
+		<div id="abdias"></div>
+	</footer>
+<!-- InstanceBeginEditable name="Code" --><script id="codeJS" type="text/javascript">
+var ez = new easyCanvas('demo'),
+	img = null;  /// load an image
+
+/// draw image when loaded
+ez.loadImage('../gfx/butterfly.jpg', function(e) {
+	img = e.image;
+	ez.drawImageProp(img);		/// full size	
+})
+
+/// turn pixels into gray-scale based on slider value
+function grayscale(e) {
+
+	if (img === null) return;
+
+	ez.drawImageProp(img);
+
+	ez.lock(lock.checked);
+	
+	var x, y = 0, px, l, v = parseInt(e.value, 10) * 0.01;
+	
+	for(;y < ez.height; y++) {
+		for(x = 0;x < ez.width; x++) {
+
+			px = ez.getPixel(x, y);
+			l = px[0] * 0.21 + px[1] * 0.72 + px[2] * 0.07;
+
+			ez.setPixel(x, y, [ l * (1 - v) + px[0] * v,
+								l * (1 - v) + px[1] * v,
+								l * (1 - v) + px[2] * v, 255]);
+		}
+	}
+
+	ez.lock(false);
+}
+</script>
+<!-- InstanceEndEditable -->
+<script type="text/javascript">codeFormatter()</script>
+</body>
+<!-- InstanceEnd --></html>
