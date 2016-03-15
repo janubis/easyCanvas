@@ -22,6 +22,7 @@ easyCanvas for things that are tedious to set up - when you want.
 easyCanvas is now legacy.
 
 You can find some [old demos (now a bit outdated) here](http://epistemex.github.io/easyCanvas/).
+These web pages was originally hosted on its own domain - please ignore the PayPal button (historical).
 
 easyCanvas was developed original for a specific internal need and is 
 provided as-is to the public. The library will not be developed further 
